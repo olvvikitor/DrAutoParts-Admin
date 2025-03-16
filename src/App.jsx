@@ -1,12 +1,11 @@
+import { AppRoutes } from "./routes/AppRoutes"
 
-
-function App() {
+export default function App() {
 
   return (
     <>
-     <p>oi</p>
+      <AppRoutes />
     </>
   )
 }
 
-export default App
