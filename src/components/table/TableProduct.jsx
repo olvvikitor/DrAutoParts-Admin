@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { RxArrowRight, RxArrowLeft } from "react-icons/rx";
+import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash} from "react-icons/rx";
+import Edit from "../crud/product/Edit";
+import Delete from "../crud/product/Delete";
 
 export default function TableProduct() {
     // Dados da tabela
@@ -105,6 +107,42 @@ export default function TableProduct() {
         { id: 99, name: "99", color: "Black", category: "Accessories", price: "$99" },
         { id: 100, name: "100", color: "White", category: "Laptop PC", price: "$1999" },
     ];
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Estado para controlar o modal de deletar
+    const [productToEdit, setProductToEdit] = useState(null);
+    const [productToDelete, setProductToDelete] = useState(null); // Estado para armazenar o produto a ser deletado
+
+    // Função para abrir o modal de edição
+    const handleEditClick = (product) => {
+        setProductToEdit(product); // Define o produto que será editado
+        setIsEditModalOpen(true); // Abre o modal
+    };
+    // Função para abrir o modal de deletar
+    const handleDeleteClick = (product) => {
+        setProductToDelete(product); // Define o produto que será deletado
+        setIsDeleteModalOpen(true); // Abre o modal
+    };
+
+
+    // Função para fechar o modal de edição
+    const closeEditModal = () => {
+        setIsEditModalOpen(false);
+        setProductToEdit(null);
+    };
+
+    // Função para fechar o modal de deletar
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+        setProductToDelete(null);
+    };
+
+    // Função para confirmar a deleção
+    const confirmDelete = () => {
+        // Lógica para deletar o produto
+        console.log("Produto deletado:", productToDelete);
+        closeDeleteModal(); // Fecha o modal após a deleção
+    };
+
 
     // Estado para controlar a página atual
     const [currentPage, setCurrentPage] = useState(1);
@@ -131,8 +169,8 @@ export default function TableProduct() {
                 <button
                     onClick={() => paginate(1)}
                     className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === 1
-                            ? "text-blue-600 bg-blue-50 dark:bg-blue-600 dark:text-white"
-                            : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        ? "text-blue-600 bg-blue-50 dark:bg-blue-600 dark:text-white"
+                        : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         }`}
                 >
                     1
@@ -179,8 +217,8 @@ export default function TableProduct() {
                     <button
                         onClick={() => paginate(totalPages)}
                         className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === totalPages
-                                ? "text-blue-600 bg-blue-50 dark:bg-blue-600 dark:text-white"
-                                : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            ? "text-blue-600 bg-blue-50 dark:bg-blue-600 dark:text-white"
+                            : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                             }`}
                     >
                         {totalPages}
@@ -192,8 +230,9 @@ export default function TableProduct() {
         return buttons;
     };
 
+
     return (
-        <div className="flex flex-col overflow-x-auto min-w-[250px] rounded-lg dark:bg-gray-700 dark:text-gray-400 p-2">
+        <div className="flex flex-col overflow-x-auto min-w-[250px] rounded-lg dark:bg-gray-700 dark:text-gray-400 ">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-600 dark:text-gray-400">
@@ -215,14 +254,42 @@ export default function TableProduct() {
                                 <td className="px-4 py-3">{item.category}</td>
                                 <td className="px-4 py-3">{item.price}</td>
                                 <td className="px-4 py-3 flex gap-2">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Deletar</a>
+                                    <button
+                                        onClick={() => handleEditClick(item)} // Abre o modal de edição
+                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+                                    >
+                                        <RxPencil2 size={20}/>
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteClick(item)} // Abre o modal de deletar
+                                        className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
+                                    >
+                                        <RxTrash size={22}/>
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal de Edição */}
+            {isEditModalOpen && (
+                <Edit
+                    onClose={closeEditModal} // Função para fechar o modal
+                    product={productToEdit} // Passa o produto para edição
+                />
+            )}
+
+
+            {/* Modal de Deletar */}
+            {isDeleteModalOpen && (
+                <Delete
+                    onClose={closeDeleteModal} // Função para fechar o modal
+                    onConfirm={confirmDelete} // Função para confirmar a deleção
+                />
+            )}
+
 
             <nav className="flex justify-end items-center py-4 bg-gray-50 dark:bg-gray-700" aria-label="Table navigation">
                 <ul className="inline-flex gap-0.5 text-sm h-8">
@@ -231,8 +298,8 @@ export default function TableProduct() {
                             onClick={() => paginate(currentPage - 1)}
                             disabled={currentPage === 1}
                             className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === 1
-                                    ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
-                                    : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
+                                : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
                         >
                             <RxArrowLeft size={17} />
@@ -246,8 +313,8 @@ export default function TableProduct() {
                             onClick={() => paginate(currentPage + 1)}
                             disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
                             className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(data.length / itemsPerPage)
-                                    ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
-                                    : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
+                                : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
                         >
                             <RxArrowRight size={17} />
