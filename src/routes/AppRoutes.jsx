@@ -4,9 +4,10 @@ import LoginLayout from '../layouts/LoginLayout';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Login from '../pages/login/Login';
 import Home from '../pages/home/Home';
-import Product from '../pages/Product/Product';
+import Supplier from '../pages/Supplier/Supplier';
+import CreateSupplier from '../pages/Supplier/CreateSupplier';
+import EditSupplier from '../pages/Supplier/EditSupplier';
 import ProtectedRouter from '../components/protected/ProtectedRouter'; // Importe o ProtectedRouter
-
 export function AppRoutes() {
     return (
         <Routes>
@@ -17,10 +18,12 @@ export function AppRoutes() {
 
             {/* Rotas protegidas com DefaultLayout */}
             <Route element={<DefaultLayout />}>
-                <Route element={<ProtectedRouter />}> {/* Protege as rotas filhas */}
+                <Route element={<ProtectedRouter />}> 
                     <Route path="/home" element={<Home />} />
-                    <Route path="/product" element={<Product />} />
-                </Route>
+                    <Route path="/supplier" element={<Supplier />} />
+                    <Route path="/supplier/create" element={<CreateSupplier/>}/>
+                    <Route path="/supplier/edit/:id" element={<EditSupplier />} />
+                    </Route>
             </Route>
         </Routes>
     );

@@ -8,7 +8,7 @@ export default function MenuAll() {
         { icon: <RxArchive size={24} />, title: "Produtos", count: 324, to: "/product" },
         { icon: <RxShare1 size={24} />, title: "Categorias", count: 324, to: "/categorias" },
         { icon: <RxTransform size={24} />, title: "Modelos", count: 324, to: "/modelos" },
-        { icon: <RxClipboardCopy size={24} />, title: "Fornecedores", count: 324, to: "/fornecedores" },
+        { icon: <RxClipboardCopy size={24} />, title: "Fornecedores", count: 324, to: "/supplier" },
     ];
 
     // Variantes de animação para os itens

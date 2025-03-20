@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function Delete({ onClose, onConfirm }) {
+export default function DeleteModal({ onClose, onConfirm, titleDelete, textDelete }) {
     return (
         <motion.div
             className="fixed inset-0 flex items-center justify-center z-50"
@@ -16,17 +16,17 @@ export default function Delete({ onClose, onConfirm }) {
 
             {/* Modal centralizado */}
             <motion.div
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md relative z-50"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-[90%] max-w-md relative z-50"
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -50, opacity: 0 }}
                 transition={{ duration: 0.3 }}
             >
                 <h2 className="text-xl font-semibold mb-4 text-zinc-700 dark:text-zinc-300">
-                    Deletar Produto
+                    {titleDelete}
                 </h2>
                 <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                    Tem certeza que deseja deletar este produto? Esta ação não pode ser desfeita.
+                    {textDelete}
                 </p>
                 <div className="flex justify-end gap-3">
                     <button
