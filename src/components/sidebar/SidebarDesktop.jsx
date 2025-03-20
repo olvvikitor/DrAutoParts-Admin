@@ -2,21 +2,23 @@ import React from 'react';
 import { RxDashboard, RxClipboardCopy, RxArchive, RxShare1, RxTransform } from "react-icons/rx";
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from "../../assets/logo.png";
 
 const SidebarDesktop = ({ isOpen }) => {
     const menuItems = [
         { icon: <RxDashboard size={20} />, text: "Dashboard", to: "/home" },
-        { icon: <RxArchive size={20} />, text: "Produtos", to: "/Product" },
-        { icon: <RxShare1 size={20} />, text: "Categorias", to: "/categories" },
-        { icon: <RxTransform size={20} />, text: "Modelos", to: "/models" },
-        { icon: <RxClipboardCopy size={20} />, text: "Fornecedores", to: "/suppliers" },
+        { icon: <RxArchive size={20} />, text: "Produtos", to: "/product" },
+        { icon: <RxShare1 size={20} />, text: "Categorias", to: "/categorie" },
+        { icon: <RxTransform size={20} />, text: "Modelos", to: "/model" },
+        { icon: <RxClipboardCopy size={20} />, text: "Fornecedores", to: "/supplier" },
     ];
 
     return (
         <div className={`flex ${isOpen ? 'w-60' : 'w-20'} h-[100vh] bg-white transition-all duration-600 dark:bg-gray-900`}>
             <div className="flex flex-col w-full">
-                <div className="p-4 flex items-center justify-between text-zinc-700 dark:text-zinc-300">
-                    <span className="text-lg font-semibold hover:cursor-pointer">Hooks</span>
+                <div className="p-2 flex items-center justify-between text-zinc-700 dark:text-zinc-300">
+                    {/* <span className="text-lg font-semibold hover:cursor-pointer">Hooks</span> */}
+                    <img src={logo} alt="logo" className={`${ isOpen ? 'size-[80%]' : 'size-[100%]'}`}/>
                 </div>
                 <div className="flex flex-col p-4">
                     <ul className='text-zinc-700 text-sm font-semibold dark:text-zinc-300'>

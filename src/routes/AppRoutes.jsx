@@ -4,9 +4,9 @@ import LoginLayout from '../layouts/LoginLayout';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Login from '../pages/login/Login';
 import Home from '../pages/home/Home';
-import Supplier from '../pages/Supplier/Supplier';
-import CreateSupplier from '../pages/Supplier/CreateSupplier';
-import EditSupplier from '../pages/Supplier/EditSupplier';
+import Supplier from '../pages/supplier/Supplier';
+import CreateSupplier from '../pages/supplier/CreateSupplier';
+import EditSupplier from '../pages/supplier/EditSupplier';
 import ProtectedRouter from '../components/protected/ProtectedRouter'; // Importe o ProtectedRouter
 export function AppRoutes() {
     return (

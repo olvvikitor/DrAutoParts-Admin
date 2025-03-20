@@ -18,6 +18,7 @@ export default function TableSupplier() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [getItemForDelete, setGetItemForDelete] = useState();
 
     const navigate = useNavigate();
 
@@ -230,8 +231,15 @@ export default function TableSupplier() {
             {/* Modais */}
             {isDeleteModalOpen && (
                 <DeleteModal
-                    titleDelete={"Deletar Fornecedor"}
-                    textDelete={"Tem certeza que deseja deletar este fornecedor? Esta ação não pode ser desfeita."}
+                    titleDelete="Deletar Fornecedor"
+                    textDelete={
+                        <>
+                            Tem certeza que deseja deletar 
+                            <span className="text-xl font-bold"> {supplierToDelete.name} </span>
+                            <span className="text-xl font-bold"> {supplierToDelete.code} </span>? <br/>
+                            Esta ação não pode ser desfeita.
+                        </>
+                    }
                     onClose={closeDeleteModal}
                     onConfirm={confirmDelete}
                 />

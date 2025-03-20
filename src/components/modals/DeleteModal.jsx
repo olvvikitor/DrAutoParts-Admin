@@ -32,14 +32,14 @@ export default function DeleteModal({ onClose, onConfirm, titleDelete, textDelet
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-500"
+                        className="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-500 cursor-pointer"
                     >
                         Cancelar
                     </button>
                     <button
                         type="button"
                         onClick={onConfirm}
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer"
                     >
                         Deletar
                     </button>

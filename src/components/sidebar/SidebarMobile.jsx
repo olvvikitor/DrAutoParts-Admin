@@ -21,10 +21,10 @@ export default function SidebarMobile ({ isOpen, toggleSidebar }) {
                     <nav className="mt-6">
                         <ul className='text-zinc-700 text-lg font-semibold dark:text-zinc-300'>
                             <li><Link to="/home" onClick={toggleSidebar}>Dashboard</Link></li>
-                            <li><Link to="/Product" onClick={toggleSidebar}>Produtos</Link></li>
-                            <li><Link to="/categories" onClick={toggleSidebar}>Categorias</Link></li>
-                            <li><Link to="/models" onClick={toggleSidebar}>Modelos</Link></li>
-                            <li><Link to="/suppliers" onClick={toggleSidebar}>Fornecedores</Link></li>
+                            <li><Link to="/product" onClick={toggleSidebar}>Produtos</Link></li>
+                            <li><Link to="/categorie" onClick={toggleSidebar}>Categorias</Link></li>
+                            <li><Link to="/model" onClick={toggleSidebar}>Modelos</Link></li>
+                            <li><Link to="/supplier" onClick={toggleSidebar}>Fornecedores</Link></li>
                         </ul>
                     </nav>
                 </motion.div>
