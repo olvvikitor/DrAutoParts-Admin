@@ -7,7 +7,7 @@ import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableSupplier() {
+export default function TableSupplier({ searchTerm }) {
     const {
         getSuppliers,
         deleteSupplier,
@@ -22,6 +22,10 @@ export default function TableSupplier() {
     const [showErrorModal, setShowErrorModal] = useState(false);
 
     const navigate = useNavigate();
+
+    const filteredSuppliers = getSuppliers.filter((supplier) =>
+        supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     useEffect(() => {
         fetchSuppliers();
@@ -75,7 +79,7 @@ export default function TableSupplier() {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = getSuppliers.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filteredSuppliers.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -154,7 +158,7 @@ export default function TableSupplier() {
         <div className="flex flex-col overflow-x-auto min-w-[250px] rounded-lg dark:bg-gray-700 dark:text-gray-400 ">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400 rounded-2xl">
                         <tr>
                             <th scope="col" className="px-4 py-3">Nome</th>
                             <th scope="col" className="px-4 py-3">Código</th>

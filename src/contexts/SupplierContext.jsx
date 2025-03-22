@@ -33,9 +33,7 @@ export function SupplierProvider({ children }) {
         }
     };
 
-    // ✅ GET Fornecedores byID com Token
-
-    // Função para buscar um fornecedor pelo ID
+    // ✅ GET Fornecedores by ID com Token
     const fetchSupplierById = async (id) => {
         try {
             const response = await axios.get(`${BASE_URL}${API_URLS.FORNECEDOR.GET_BY_ID}${id}`, {
@@ -49,6 +47,20 @@ export function SupplierProvider({ children }) {
             throw error;
         }
     };
+
+    const fetchSupplierByName = async (fornecedorName) => {
+        try {
+            const response = await axios.get(`${BASE_URL}${API_URLS.FORNECEDOR.GET_BY_NAME}${fornecedorName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao buscar fornecedor pelo Nome:", error);
+            throw error;
+        }
+    }
 
     // ✅ CREATE Fornecedor com Token e dados
     const addSupplier = async (fornecedorData) => {
@@ -134,7 +146,7 @@ export function SupplierProvider({ children }) {
 
         } catch (error) {
             console.error("Erro ao excluir fornecedor:", error);
-        } finally{
+        } finally {
             setLoading(false)
         }
     };
@@ -146,6 +158,7 @@ export function SupplierProvider({ children }) {
                 getSuppliers,
                 fetchSuppliers,
                 fetchSupplierById,
+                fetchSupplierByName,
                 addSupplier,
                 updateSupplier,
                 deleteSupplier,

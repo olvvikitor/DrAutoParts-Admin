@@ -7,7 +7,7 @@ import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableModel() {
+export default function TableModel({searchTerm}) {
 
     const { getModels, fetchModels, deleteModel, loading } = useContext(ModelContext);
 
@@ -19,8 +19,11 @@ export default function TableModel() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
-
     const navigate = useNavigate();
+
+    const filteredSuppliers = getModels.filter((supplier) =>
+        supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     useEffect(() => {
         fetchModels(); // 🔄 Sempre busca os fornecedores ao montar
@@ -80,7 +83,7 @@ export default function TableModel() {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = getModels.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filteredSuppliers.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
