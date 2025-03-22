@@ -7,6 +7,8 @@ export const ModelContext = createContext();
 
 export function ModelProvider({ children }) {
 
+    const [loading, setLoading] = useState(false)
+
     const { token } = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [getModels, setGetModels] = useState([]);
@@ -49,7 +51,7 @@ export function ModelProvider({ children }) {
     };
 
     const addModel = async (modeloData) => {
-
+        setLoading(true)
         try {
             const response = await axios.post(`${BASE_URL}${API_URLS.MODELO.CREATE}`, modeloData, {
                 headers: {
@@ -73,10 +75,13 @@ export function ModelProvider({ children }) {
                 if (status === 409) errorMessage = "Modelo já existe com esse nome";
                 setError(errorMessage);
             }
-        }
+        } finally {
+            setLoading(false)
+        }   
     }
 
     const updateModel = async (modeloId, updateModelo) => {
+        setLoading(true)
 
         try {
             const response = await axios.put(`${BASE_URL}${API_URLS.MODELO.UPDATE}${modeloId}`, updateModelo, {
@@ -102,10 +107,14 @@ export function ModelProvider({ children }) {
                 if (status === 409) errorMessage = "Modelo já existe com esse nome";
                 setError(errorMessage);
             }
+        } finally{
+            setLoading(false)
+
         }
     }
 
     const deleteModel = async (modeloId) => {
+        setLoading(true)
 
         if (!token) return alert("Você precisa estar logado para excluir modelos.");
 
@@ -120,11 +129,14 @@ export function ModelProvider({ children }) {
 
         } catch (error) {
             console.error("Error ao excluir modelo!");
+        } finally{
+            setLoading(false)
+
         }
     }
 
     return (
-        <ModelContext.Provider value={{ getModels, fetchModels, fetchModelById, deleteModel, addModel, updateModel, setError, error }}>
+        <ModelContext.Provider value={{ getModels, fetchModels, fetchModelById, deleteModel, addModel, updateModel, setError, loading, error }}>
             {children}
         </ModelContext.Provider>
     )

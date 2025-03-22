@@ -5,13 +5,15 @@ import { useNavigate } from "react-router";
 import DeleteModal from "../modals/DeleteModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import LoadingSpinner from "../loading/LoadingSpinner";
 
 export default function TableSupplier() {
     const {
         getSuppliers,
         deleteSupplier,
         error,
-        fetchSuppliers
+        fetchSuppliers,
+        loading
     } = useContext(SupplierContext);
 
     const [supplierToDelete, setSupplierToDelete] = useState(null);
@@ -22,7 +24,7 @@ export default function TableSupplier() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchSuppliers(); // 🔄 Sempre busca os fornecedores ao montar
+        fetchSuppliers();
     }, []);
 
     const handleEdit = (supplier) => {
@@ -39,7 +41,7 @@ export default function TableSupplier() {
         setSupplierToDelete(null);
     };
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {  // ⬅️ Tornar a função assíncrona
         if (!supplierToDelete.id) {
             setShowErrorModal(true);
             setTimeout(() => {
@@ -51,21 +53,22 @@ export default function TableSupplier() {
         }
 
         try {
-            deleteSupplier(supplierToDelete.id);
+            await deleteSupplier(supplierToDelete.id);  // ⬅️ Aguarda a execução antes de continuar
             setShowSuccessModal(true);
             setTimeout(() => {
                 setShowSuccessModal(false);
             }, 2000);
-            closeDeleteModal();
         } catch (error) {
             setShowErrorModal(true);
             setTimeout(() => {
                 setShowErrorModal(false);
             }, 2000);
-            closeDeleteModal();
             console.error("Erro ao deletar o fornecedor:", error);
+        } finally {
+            closeDeleteModal();  // ⬅️ Fecha o modal após tudo
         }
     };
+
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
@@ -233,9 +236,9 @@ export default function TableSupplier() {
                     titleDelete="Deletar Fornecedor"
                     textDelete={
                         <>
-                            Tem certeza que deseja deletar 
+                            Tem certeza que deseja deletar
                             <span className="text-xl font-bold"> {supplierToDelete.name} </span>
-                            <span className="text-xl font-bold"> {supplierToDelete.code} </span>? <br/>
+                            <span className="text-xl font-bold"> {supplierToDelete.code} </span>? <br />
                             Esta ação não pode ser desfeita.
                         </>
                     }
@@ -246,6 +249,8 @@ export default function TableSupplier() {
 
             {showSuccessModal && <SucessModal titleSucess="Fornecedor Deletado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao deletar fornecedor!" />}
+            {loading && <LoadingSpinner />}
+
         </div>
     );
 }

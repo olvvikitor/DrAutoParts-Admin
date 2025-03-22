@@ -7,6 +7,8 @@ export const SupplierContext = createContext();
 
 export function SupplierProvider({ children }) {
 
+    const [loading, setLoading] = useState(false);
+
     const { token } = useContext(AuthContext);
     const [error, setError] = useState(null); // Estado para erro
     const [getSuppliers, setGetSuppliers] = useState([]);
@@ -50,6 +52,9 @@ export function SupplierProvider({ children }) {
 
     // ✅ CREATE Fornecedor com Token e dados
     const addSupplier = async (fornecedorData) => {
+
+        setLoading(true); // Inicia o carregamento
+
         try {
             const response = await axios.post(`${BASE_URL}${API_URLS.FORNECEDOR.CREATE}`, fornecedorData, {
                 headers: {
@@ -73,11 +78,15 @@ export function SupplierProvider({ children }) {
                 if (status === 409) errorMessage = "Fornecedor já existe com esse nome";
                 setError(errorMessage);
             }
+        } finally {
+            setLoading(false) //Finaliza o carregamento
         }
     };
 
     // ✅ ATUALIZAR Fornecedor com Token e dados
     const updateSupplier = async (fornecedorId, updatedFornecedor) => {
+
+        setLoading(true)
 
         try {
             const response = await axios.put(`${BASE_URL}${API_URLS.FORNECEDOR.UPDATE}${fornecedorId}`, updatedFornecedor, {
@@ -102,12 +111,17 @@ export function SupplierProvider({ children }) {
                 if (status === 409) errorMessage = "Fornecedor já existe com esse nome";
                 setError(errorMessage);
             }
+        } finally {
+            setLoading(false)
         }
     };
 
 
     // ✅ DELETAR Fornecedor com Token e dados
     const deleteSupplier = async (fornecedorId) => {
+
+        setLoading(true)
+
         if (!token) return alert("Você precisa estar logado para excluir fornecedores.");
 
         try {
@@ -117,9 +131,11 @@ export function SupplierProvider({ children }) {
 
             console.log("Fornecedor excluído com sucesso!");
             await fetchSuppliers(); // 🔄 Atualiza a lista de fornecedores
-            
+
         } catch (error) {
             console.error("Erro ao excluir fornecedor:", error);
+        } finally{
+            setLoading(false)
         }
     };
 
@@ -134,7 +150,8 @@ export function SupplierProvider({ children }) {
                 updateSupplier,
                 deleteSupplier,
                 setError,
-                error
+                error,
+                loading
             }}>
             {children}
         </SupplierContext.Provider>

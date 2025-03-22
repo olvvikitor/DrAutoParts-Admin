@@ -1,14 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { useNavigate } from "react-router";
-import {ModelContext} from "../../contexts/ModelContext";
+import { ModelContext } from "../../contexts/ModelContext";
 import DeleteModal from "../modals/DeleteModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import LoadingSpinner from "../loading/LoadingSpinner";
 
 export default function TableModel() {
 
-    const{getModels, fetchModels, deleteModel} = useContext(ModelContext);
+    const { getModels, fetchModels, deleteModel, loading } = useContext(ModelContext);
 
     console.log("na tabela models ", getModels);
 
@@ -39,7 +40,7 @@ export default function TableModel() {
         setModelToDelete(null);
     };
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (!modelToDelete.id) {
             setShowErrorModal(true);
             setTimeout(() => {
@@ -52,23 +53,25 @@ export default function TableModel() {
 
         try {
 
-            deleteModel(modelToDelete.id);
+            await deleteModel(modelToDelete.id);
             setShowSuccessModal(true);
 
             setTimeout(() => {
                 setShowSuccessModal(false);
             }, 2000);
 
-            closeDeleteModal();
-            
         } catch (error) {
-            
+
             setShowErrorModal(true);
             setTimeout(() => {
                 setShowErrorModal(false);
             }, 2000);
             closeDeleteModal();
             console.error("Erro ao deletar o modelo:", error);
+
+        } finally {
+            closeDeleteModal();
+
         }
     };
 
@@ -243,10 +246,10 @@ export default function TableModel() {
                     titleDelete="Deletar Fornecedor"
                     textDelete={
                         <>
-                            Tem certeza que deseja deletar 
+                            Tem certeza que deseja deletar
                             <span className="text-xl font-bold"> {modelToDelete.name} </span>
                             <span className="text-xl font-bold"> {modelToDelete.marca} </span>
-                            <span className="text-xl font-bold"> {modelToDelete.ano} </span>? <br/>
+                            <span className="text-xl font-bold"> {modelToDelete.ano} </span>? <br />
                             Esta ação não pode ser desfeita.
                         </>
                     }
@@ -257,6 +260,8 @@ export default function TableModel() {
 
             {showSuccessModal && <SucessModal titleSucess="Modelo Deletado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao deletar modelo!" />}
+            {loading && <LoadingSpinner />}
+
         </div>
     );
 }

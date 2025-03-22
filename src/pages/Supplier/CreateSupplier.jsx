@@ -2,12 +2,13 @@ import { useState, useContext, useEffect } from "react";
 import { SupplierContext } from "../../contexts/SupplierContext";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import LoadingSpinner from "../../components/loading/LoadingSpinner";
 import { RxArrowLeft } from "react-icons/rx";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 
 export default function CreateSupplier() {
-    const { addSupplier, error, setError } = useContext(SupplierContext);
+    const { addSupplier, error, setError, loading } = useContext(SupplierContext);
 
 
     const [supplierCreateData, setSupplierCreateData] = useState({
@@ -151,6 +152,7 @@ export default function CreateSupplier() {
             </div>
             {showSuccessModal && <SucessModal titleSucess="Fornecedor criado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao criar fornecedor!" textError={error} />}
+            {loading && <LoadingSpinner />} 
         </div>
     );
 }

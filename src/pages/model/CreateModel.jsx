@@ -2,13 +2,13 @@ import { useState, useContext, useEffect } from "react";
 import { ModelContext } from "../../contexts/ModelContext";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import LoadingSpinner from "../../components/loading/LoadingSpinner";
 import { RxArrowLeft } from "react-icons/rx";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 
 export default function CreateModel() {
-    const { addModel, error, setError } = useContext(ModelContext);
-
+    const { addModel, error, setError, loading } = useContext(ModelContext);
 
     const [modelCreateData, setModelCreateData] = useState({
         nome: "",
@@ -30,9 +30,9 @@ export default function CreateModel() {
                 setError(null)
 
             }, 2000);
-            return () => clearTimeout(timer); 
+            return () => clearTimeout(timer);
         }
-    }, [error]); 
+    }, [error]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -168,6 +168,7 @@ export default function CreateModel() {
             </div>
             {showSuccessModal && <SucessModal titleSucess="Modelo criado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao criar Modelo!" textError={error} />}
+            {loading && <LoadingSpinner />}
         </div>
     );
 }

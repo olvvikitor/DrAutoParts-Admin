@@ -6,10 +6,11 @@ import { motion } from "framer-motion";
 import { RxArrowLeft } from "react-icons/rx";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import LoadingSpinner from "../../components/loading/LoadingSpinner";
 
 export default function EditSupplier() {
     const { id } = useParams(); // Pega o ID da URL
-    const { fetchSupplierById, updateSupplier, error, setError } = useContext(SupplierContext);
+    const { fetchSupplierById, updateSupplier, error, setError, loading } = useContext(SupplierContext);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -164,6 +165,8 @@ export default function EditSupplier() {
             </div>
             {showSuccessModal && <SucessModal titleSucess="Fornecedor editado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao editar fornecedor!" textError={error} />}
+            {loading && <LoadingSpinner />}
+
         </div>
     );
 }
