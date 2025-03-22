@@ -8,7 +8,7 @@ const SidebarDesktop = ({ isOpen }) => {
     const menuItems = [
         { icon: <RxDashboard size={20} />, text: "Dashboard", to: "/home" },
         { icon: <RxArchive size={20} />, text: "Produtos", to: "/product" },
-        { icon: <RxShare1 size={20} />, text: "Categorias", to: "/categorie" },
+        { icon: <RxShare1 size={20} />, text: "Categorias", to: "/category" },
         { icon: <RxTransform size={20} />, text: "Modelos", to: "/model" },
         { icon: <RxClipboardCopy size={20} />, text: "Fornecedores", to: "/supplier" },
     ];

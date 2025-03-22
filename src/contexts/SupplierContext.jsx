@@ -110,9 +110,6 @@ export function SupplierProvider({ children }) {
     const deleteSupplier = async (fornecedorId) => {
         if (!token) return alert("Você precisa estar logado para excluir fornecedores.");
 
-        console.log("Tentando deletar um fornecedor...");
-        console.log("Token enviado na requisição:", token);
-
         try {
             await axios.delete(`${BASE_URL}${API_URLS.FORNECEDOR.DELETE}${fornecedorId}`, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -120,7 +117,6 @@ export function SupplierProvider({ children }) {
 
             console.log("Fornecedor excluído com sucesso!");
             await fetchSuppliers(); // 🔄 Atualiza a lista de fornecedores
-            console.log("Fornecedor excluído com sucesso!");
             
         } catch (error) {
             console.error("Erro ao excluir fornecedor:", error);

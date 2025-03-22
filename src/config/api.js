@@ -18,14 +18,14 @@ export const API_URLS = {
         GET_BY_NAME: "/api/v1/category/{name}",
         GET_ALL: "/api/v1/category",
     },
-    MODELO: {
-        CREATE: "/api/v1/modelo/new",
-        GET_ALL: "/api/v1/modelo",
-        GET_BY_ID: "/api/v1/modelo/",
-        UPDATE: "/api/v1/modelo/",
-        DELETE: "/api/v1/modelo/",
-        GET_BY_NAME: "/api/v1/modelo/name/",
-    },
+        MODELO: {
+            CREATE: "/api/v1/modelo/new",
+            GET_ALL: "/api/v1/modelo",
+            GET_BY_ID: "/api/v1/modelo/",
+            UPDATE: "/api/v1/modelo/",
+            DELETE: "/api/v1/modelo/",
+            GET_BY_NAME: "/api/v1/modelo/name/",
+        },
     FORNECEDOR: {
         CREATE: "/api/v1/fornecedor/new",
         GET_ALL: "/api/v1/fornecedor",

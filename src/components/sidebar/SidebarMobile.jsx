@@ -22,7 +22,7 @@ export default function SidebarMobile ({ isOpen, toggleSidebar }) {
                         <ul className='text-zinc-700 text-lg font-semibold dark:text-zinc-300'>
                             <li><Link to="/home" onClick={toggleSidebar}>Dashboard</Link></li>
                             <li><Link to="/product" onClick={toggleSidebar}>Produtos</Link></li>
-                            <li><Link to="/categorie" onClick={toggleSidebar}>Categorias</Link></li>
+                            <li><Link to="/category" onClick={toggleSidebar}>Categorias</Link></li>
                             <li><Link to="/model" onClick={toggleSidebar}>Modelos</Link></li>
                             <li><Link to="/supplier" onClick={toggleSidebar}>Fornecedores</Link></li>
                         </ul>

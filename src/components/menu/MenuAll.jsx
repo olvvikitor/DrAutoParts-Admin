@@ -6,8 +6,8 @@ export default function MenuAll() {
     // Array de objetos para os itens do menu
     const items = [
         { icon: <RxArchive size={24} />, title: "Produtos", count: 324, to: "/product" },
-        { icon: <RxShare1 size={24} />, title: "Categorias", count: 324, to: "/categorias" },
-        { icon: <RxTransform size={24} />, title: "Modelos", count: 324, to: "/modelos" },
+        { icon: <RxShare1 size={24} />, title: "Categorias", count: 324, to: "/category" },
+        { icon: <RxTransform size={24} />, title: "Modelos", count: 324, to: "/model" },
         { icon: <RxClipboardCopy size={24} />, title: "Fornecedores", count: 324, to: "/supplier" },
     ];
 

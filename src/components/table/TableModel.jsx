@@ -1,69 +1,74 @@
 import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
-import { SupplierContext } from "../../contexts/SupplierContext";
 import { useNavigate } from "react-router";
+import {ModelContext} from "../../contexts/ModelContext";
 import DeleteModal from "../modals/DeleteModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 
-export default function TableSupplier() {
-    const {
-        getSuppliers,
-        deleteSupplier,
-        error,
-        fetchSuppliers
-    } = useContext(SupplierContext);
+export default function TableModel() {
 
-    const [supplierToDelete, setSupplierToDelete] = useState(null);
+    const{getModels, fetchModels, deleteModel} = useContext(ModelContext);
+
+    console.log("na tabela models ", getModels);
+
+
+    const [modelToDelete, setModelToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchSuppliers(); // 🔄 Sempre busca os fornecedores ao montar
+        fetchModels(); // 🔄 Sempre busca os fornecedores ao montar
     }, []);
 
-    const handleEdit = (supplier) => {
-        navigate(`/supplier/edit/${supplier.id}`);
+    const handleEdit = (model) => {
+        navigate(`/model/edit/${model.id}`);
     };
 
-    const handleDeleteClick = (supplier) => {
-        setSupplierToDelete(supplier);
+    const handleDeleteClick = (model) => {
+        setModelToDelete(model);
         setIsDeleteModalOpen(true);
     };
 
     const closeDeleteModal = () => {
         setIsDeleteModalOpen(false);
-        setSupplierToDelete(null);
+        setModelToDelete(null);
     };
 
     const confirmDelete = () => {
-        if (!supplierToDelete.id) {
+        if (!modelToDelete.id) {
             setShowErrorModal(true);
             setTimeout(() => {
                 setShowErrorModal(false);
             }, 2000);
             closeDeleteModal();
-            console.error("Erro: Nenhum fornecedor válido para deletar.");
+            console.error("Erro: Nenhum modelo válido para deletar.");
             return;
         }
 
         try {
-            deleteSupplier(supplierToDelete.id);
+
+            deleteModel(modelToDelete.id);
             setShowSuccessModal(true);
+
             setTimeout(() => {
                 setShowSuccessModal(false);
             }, 2000);
+
             closeDeleteModal();
+            
         } catch (error) {
+            
             setShowErrorModal(true);
             setTimeout(() => {
                 setShowErrorModal(false);
             }, 2000);
             closeDeleteModal();
-            console.error("Erro ao deletar o fornecedor:", error);
+            console.error("Erro ao deletar o modelo:", error);
         }
     };
 
@@ -72,7 +77,7 @@ export default function TableSupplier() {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = getSuppliers.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = getModels.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -80,7 +85,7 @@ export default function TableSupplier() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(getSuppliers.length / itemsPerPage);
+        const totalPages = Math.ceil(getModels.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
@@ -154,7 +159,8 @@ export default function TableSupplier() {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-4 py-3">Nome</th>
-                            <th scope="col" className="px-4 py-3">Código</th>
+                            <th scope="col" className="px-4 py-3">Marca</th>
+                            <th scope="col" className="px-4 py-3">Ano</th>
                             <th scope="col" className="px-4 py-3">Ação</th>
                         </tr>
                     </thead>
@@ -164,7 +170,8 @@ export default function TableSupplier() {
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item.name}
                                 </td>
-                                <td className="px-4 py-3">{item.code}</td>
+                                <td className="px-4 py-3">{item.marca}</td>
+                                <td className="px-4 py-3">{item.ano}</td>
                                 <td className="px-4 py-3 flex gap-2">
                                     <button
                                         onClick={() => handleEdit(item)}
@@ -184,6 +191,9 @@ export default function TableSupplier() {
                         {/* Renderizar linhas vazias */}
                         {Array.from({ length: emptyRows }).map((_, index) => (
                             <tr key={`empty-${index}`} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    &nbsp;
+                                </th>
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     &nbsp;
                                 </th>
@@ -216,8 +226,8 @@ export default function TableSupplier() {
                     <li>
                         <button
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(getSuppliers.length / itemsPerPage)}
-                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getSuppliers.length / itemsPerPage)
+                            disabled={currentPage === Math.ceil(getModels.length / itemsPerPage)}
+                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getModels.length / itemsPerPage)
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
                                 : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
@@ -234,8 +244,9 @@ export default function TableSupplier() {
                     textDelete={
                         <>
                             Tem certeza que deseja deletar 
-                            <span className="text-xl font-bold"> {supplierToDelete.name} </span>
-                            <span className="text-xl font-bold"> {supplierToDelete.code} </span>? <br/>
+                            <span className="text-xl font-bold"> {modelToDelete.name} </span>
+                            <span className="text-xl font-bold"> {modelToDelete.marca} </span>
+                            <span className="text-xl font-bold"> {modelToDelete.ano} </span>? <br/>
                             Esta ação não pode ser desfeita.
                         </>
                     }
@@ -244,8 +255,8 @@ export default function TableSupplier() {
                 />
             )}
 
-            {showSuccessModal && <SucessModal titleSucess="Fornecedor Deletado com sucesso!" />}
-            {showErrorModal && <ErrorModal titleError="Erro ao deletar fornecedor!" />}
+            {showSuccessModal && <SucessModal titleSucess="Modelo Deletado com sucesso!" />}
+            {showErrorModal && <ErrorModal titleError="Erro ao deletar modelo!" />}
         </div>
     );
 }
