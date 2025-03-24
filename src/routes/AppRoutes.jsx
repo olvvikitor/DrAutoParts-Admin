@@ -4,7 +4,7 @@ import LoginLayout from '../layouts/LoginLayout';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Login from '../pages/login/Login';
 import Home from '../pages/home/Home';
-import Supplier from '../pages/Supplier/Supplier';
+import Supplier from '../pages/supplier/Supplier';
 import CreateSupplier from '../pages/supplier/CreateSupplier';
 import EditSupplier from '../pages/supplier/EditSupplier';
 import Model from '../pages/model/Model';
