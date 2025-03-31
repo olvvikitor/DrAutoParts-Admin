@@ -6,16 +6,16 @@ export const API_URLS = {
     PRODUCT: {
         CREATE: "/api/v1/products/new",
         GET_ALL: "/api/v1/products/all",
-        GET_BY_ID: "/api/v1/products/{id}",
+        GET_BY_ID: "/api/v1/products/",
         SEARCH: "/api/v1/products",
-        UPDATE: "/api/v1/products/update/{id}",
+        UPDATE: "/api/v1/products/update/",
     },
     CATEGORY: {
         CREATE: "/api/v1/category/new",
-        GET_BY_ID: "/api/v1/category/{id}",
-        UPDATE: "/api/v1/category/{id}",
-        DELETE: "/api/v1/category/{id}",
-        GET_BY_NAME: "/api/v1/category/{name}",
+        GET_BY_ID: "/api/v1/category/",
+        UPDATE: "/api/v1/category/",
+        DELETE: "/api/v1/category/",
+        GET_BY_NAME: "/api/v1/category/",
         GET_ALL: "/api/v1/category",
     },
         MODELO: {

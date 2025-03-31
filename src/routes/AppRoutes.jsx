@@ -10,6 +10,9 @@ import EditSupplier from '../pages/supplier/EditSupplier';
 import Model from '../pages/model/Model';
 import CreateModel from '../pages/model/CreateModel';
 import EditModel from '../pages/model/EditModel';
+import Category from '../pages/category/Category';
+import CreateCategory from '../pages/category/CreateCategory';
+import EditCategory from '../pages/category/EditCategory';
 import ProtectedRouter from '../components/protected/ProtectedRouter'; // Importe o ProtectedRouter
 
 export function AppRoutes() {
@@ -24,6 +27,9 @@ export function AppRoutes() {
             <Route element={<DefaultLayout />}>
                 <Route element={<ProtectedRouter />}>
                     <Route path="/home" element={<Home />} />
+                    <Route path="/category" element={<Category />} />
+                    <Route path="/category/create" element={<CreateCategory />} />
+                    <Route path="/category/edit/:id" element={<EditCategory />} />
                     <Route path="/model" element={<Model />} />
                     <Route path="/model/create" element={<CreateModel />} />
                     <Route path="/model/edit/:id" element={<EditModel />} />
