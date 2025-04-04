@@ -14,7 +14,7 @@ export default function EditSupplier() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        nome: "",
+        name: "",
         code: "",
     });
 
@@ -28,7 +28,7 @@ export default function EditSupplier() {
             try {
                 const supplier = await fetchSupplierById(id);
                 setFormData({
-                    nome: supplier.name || "",
+                    name: supplier.name || "",
                     code: supplier.code || "",
                 });
             } catch (err) {
@@ -63,7 +63,7 @@ export default function EditSupplier() {
         e.preventDefault();
         let newErrors = {};
 
-        if (!formData.nome.trim()) newErrors.nome = "Nome é obrigatório";
+        if (!formData.name.trim()) newErrors.name = "Nome é obrigatório";
         if (!formData.code.trim()) newErrors.code = "Código é obrigatório";
 
         setErrorInput(newErrors);
@@ -115,20 +115,20 @@ export default function EditSupplier() {
                     transition={{ duration: 0.5 }}
                 >
                     <form onSubmit={handleSubmit} className="w-[95%] lg:w-[40%]">
-                        <div className={errorInput.nome ? "mb-0" : "mb-4"}>
+                        <div className={errorInput.name ? "mb-0" : "mb-4"}>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Nome do fornecedor
                             </label>
                             <input
                                 type="text"
-                                id="nome"
-                                name="nome"
-                                value={formData.nome}
+                                id="name"
+                                name="name"
+                                value={formData.name}
                                 onChange={handleInputChange}
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
-                        {errorInput.nome && <p className="text-red-500 text-sm">{errorInput.nome}</p>}
+                        {errorInput.name && <p className="text-red-500 text-sm">{errorInput.name}</p>}
                         <div className={errorInput.code ? "mb-0" : "mb-4"}>
                             <label htmlFor="code" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Código

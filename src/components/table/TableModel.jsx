@@ -7,7 +7,7 @@ import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableModel({searchTerm}) {
+export default function TableModel({ searchTerm }) {
 
     const { getModels, fetchModels, deleteModel, loading } = useContext(ModelContext);
 
@@ -56,12 +56,16 @@ export default function TableModel({searchTerm}) {
 
         try {
 
-            await deleteModel(modelToDelete.id);
-            setShowSuccessModal(true);
+            const sucess = await deleteModel(modelToDelete.id);
 
-            setTimeout(() => {
-                setShowSuccessModal(false);
-            }, 2000);
+            if (sucess) {
+
+                setShowSuccessModal(true);
+
+                setTimeout(() => {
+                    setShowSuccessModal(false);
+                }, 2000);
+            }
 
         } catch (error) {
 

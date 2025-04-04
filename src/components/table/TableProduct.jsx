@@ -1,104 +1,90 @@
 import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
-import { CategoryContext } from "../../contexts/CategoryContext";
 import { useNavigate } from "react-router";
+import { ProductContext } from "../../contexts/ProductContext";
 import DeleteModal from "../modals/DeleteModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import MoreInfoModal from "../modals/MoreInfoModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableCategory({ searchTerm }) {
-    const {
-        getCategories,
-        deleteCategory,
-        error,
-        setError,
-        fetchCategories,
-        loading
-    } = useContext(CategoryContext);
+export default function TableProduct({ searchTerm }) {
 
-    const [categoryToDelete, setCategoryToDelete] = useState(null);
+    const { getProducts, fetchProducts, deleteProduct, loading } = useContext(ProductContext);
+
+    const [productToDelete, setProductToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
     const navigate = useNavigate();
 
-    const filteredCategories = getCategories.filter((category) =>
-        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredProduct = getProducts.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     useEffect(() => {
-        fetchCategories();
+        fetchProducts(); // 🔄 Sempre busca os fornecedores ao montar
     }, []);
 
-    useEffect(() => {
-        if (error) {
-            setShowErrorModal(true);
-            // Fecha o modal após 2 segundos
-            const timer = setTimeout(() => {
-                setShowErrorModal(false);
-                setError(null)
-
-            }, 2000);
-            return () => clearTimeout(timer); // Limpa o timer quando o componente for desmontado
-        }
-    }, [error]); // Só é acionado quando o 'error' mudar
-
-    const handleEdit = (category) => {
-        navigate(`/category/edit/${category.id}`);
+    const handleEdit = (product) => {
+        navigate(`/product/edit/${product.id}`);
     };
 
-    const handleDeleteClick = (category) => {
-        console.log("vendo id delete category, ", category);
-        setCategoryToDelete(category);
+    const handleDeleteClick = (product) => {
+        setProductToDelete(product);
         setIsDeleteModalOpen(true);
     };
 
     const closeDeleteModal = () => {
         setIsDeleteModalOpen(false);
-        setCategoryToDelete(null);
+        setProductToDelete(null);
     };
 
-    const confirmDelete = async () => {  // ⬅️ Tornar a função assíncrona
-        if (!categoryToDelete.id) {
+    const confirmDelete = async () => {
+        if (!productToDelete.id) {
             setShowErrorModal(true);
             setTimeout(() => {
                 setShowErrorModal(false);
             }, 2000);
             closeDeleteModal();
-            console.error("Erro: Nenhum categoria válido para deletar.");
+            console.error("Erro: Nenhum produto válido para deletar.");
             return;
         }
 
         try {
-            const sucess = await deleteCategory(categoryToDelete.id);
 
+            const sucess = await deleteProduct(productToDelete.id);
+            
             if (sucess) {
-
                 setShowSuccessModal(true);
 
-                setTimeout(() => setShowSuccessModal(false), 2000);
+                setTimeout(() => {
+                    setShowSuccessModal(false);
+                }, 2000);
             }
-            
+
         } catch (error) {
+
             setShowErrorModal(true);
             setTimeout(() => {
                 setShowErrorModal(false);
             }, 2000);
-            console.error("Erro ao deletar o categoria:", error);
+            closeDeleteModal();
+            console.error("Erro ao deletar o produto:", error);
+
         } finally {
-            closeDeleteModal();  // ⬅️ Fecha o modal após tudo
+            closeDeleteModal();
+
         }
     };
-
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredCategories.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filteredProduct.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -106,7 +92,7 @@ export default function TableCategory({ searchTerm }) {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(getCategories.length / itemsPerPage);
+        const totalPages = Math.ceil(getProducts.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
@@ -177,10 +163,18 @@ export default function TableCategory({ searchTerm }) {
         <div className="flex flex-col overflow-x-auto min-w-[250px] rounded-lg dark:bg-gray-700 dark:text-gray-400 ">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400 rounded-2xl">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-4 py-3">Nome</th>
-                            <th scope="col" className="px-4 py-3">Ação</th>
+                            <th scope="col" className="px-4 py-3">Descrição</th>
+                            <th scope="col" className="px-4 py-3">Tipo</th>
+                            <th scope="col" className="px-4 py-3">Preço</th>
+                            <th scope="col" className="px-4 py-3">Preço de custo</th>
+                            <th scope="col" className="px-4 py-3">Categoria</th>
+                            <th scope="col" className="px-4 py-3">Modelos</th>
+                            <th scope="col" className="px-4 py-3">Fornecedores</th>
+                            <th scope="col" className="px-4 py-3">Imagem</th>
+                            <th scope="col" className="px-4 py-3">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,16 +183,43 @@ export default function TableCategory({ searchTerm }) {
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item.name}
                                 </td>
+                                <td className="px-4 py-3">{item.descricao}</td>
+                                <td className="px-4 py-3">{item.tipo}</td>
+                                <td className="px-4 py-3">{item.price}</td>
+                                <td className="px-4 py-3">{item.pricecoast}</td>
+                                <td className="px-4 py-3">{item.categoria.name}</td>
+                                <td className="px-4 py-3">
+                                    {item.modelos.length > 0 && (
+                                        <MoreInfoModal title="Modelos" items={item.modelos} trigger="Visualizar" />
+                                    )}
+                                </td>
+
+                                <td className="px-4 py-3">
+                                    {item.fornecedores.length > 0 && (
+                                        <MoreInfoModal title="Fornecedores" items={item.fornecedores} trigger="Visualizar" />
+                                    )}
+                                </td>
+                                <td className="px-4 py-3">
+                                    <MoreInfoModal
+                                        title="Imagem"
+                                        imgUrl={item.imgUrl}
+                                        trigger="Visualizar"
+                                    />
+                                </td>
                                 <td className="px-4 py-3 flex gap-2">
                                     <button
                                         onClick={() => handleEdit(item)}
                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+                                        title="Editar"
+
                                     >
                                         <RxPencil2 size={20} />
                                     </button>
                                     <button
                                         onClick={() => handleDeleteClick(item)}
                                         className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
+                                        title="Remover"
+
                                     >
                                         <RxTrash size={22} />
                                     </button>
@@ -211,6 +232,16 @@ export default function TableCategory({ searchTerm }) {
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     &nbsp;
                                 </th>
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    &nbsp;
+                                </th>
+                                <td className="px-4 py-3">&nbsp;</td>
+                                <td className="px-4 py-3">&nbsp;</td>
+                                <td className="px-4 py-3">&nbsp;</td>
+                                <td className="px-4 py-3">&nbsp;</td>
+                                <td className="px-4 py-3">&nbsp;</td>
+                                <td className="px-4 py-3">&nbsp;</td>
+                                <td className="px-4 py-3">&nbsp;</td>
                                 <td className="px-4 py-3 flex gap-2">
                                     &nbsp;
                                 </td>
@@ -239,8 +270,8 @@ export default function TableCategory({ searchTerm }) {
                     <li>
                         <button
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(getCategories.length / itemsPerPage)}
-                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getCategories.length / itemsPerPage)
+                            disabled={currentPage === Math.ceil(getProducts.length / itemsPerPage)}
+                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getProducts.length / itemsPerPage)
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
                                 : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
@@ -253,11 +284,11 @@ export default function TableCategory({ searchTerm }) {
             {/* Modais */}
             {isDeleteModalOpen && (
                 <DeleteModal
-                    titleDelete="Deletar Categoria"
+                    titleDelete="Deletar Produto"
                     textDelete={
                         <>
                             Tem certeza que deseja deletar
-                            <span className="text-xl font-bold"> {categoryToDelete.name} </span>
+                            <span className="text-xl font-bold"> {productToDelete.name} </span>
                             Esta ação não pode ser desfeita.
                         </>
                     }
@@ -266,8 +297,8 @@ export default function TableCategory({ searchTerm }) {
                 />
             )}
 
-            {showSuccessModal && <SucessModal titleSucess="Categoria Deletado com sucesso!" />}
-            {showErrorModal && <ErrorModal titleError="Erro ao deletar categoria!" textError={error} />}
+            {showSuccessModal && <SucessModal titleSucess="Produto Deletado com sucesso!" />}
+            {showErrorModal && <ErrorModal titleError="Erro ao deletar produto!" />}
             {loading && <LoadingSpinner />}
 
         </div>
