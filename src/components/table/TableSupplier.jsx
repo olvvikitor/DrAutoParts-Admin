@@ -57,11 +57,17 @@ export default function TableSupplier({ searchTerm }) {
         }
 
         try {
-            await deleteSupplier(supplierToDelete.id);  // ⬅️ Aguarda a execução antes de continuar
-            setShowSuccessModal(true);
-            setTimeout(() => {
-                setShowSuccessModal(false);
-            }, 2000);
+            const sucess = await deleteSupplier(supplierToDelete.id);  // ⬅️ Aguarda a execução antes de continuar
+
+            if (sucess) {
+
+                setShowSuccessModal(true);
+                setTimeout(() => {
+                    setShowSuccessModal(false);
+                }, 2000);
+
+            }
+            
         } catch (error) {
             setShowErrorModal(true);
             setTimeout(() => {

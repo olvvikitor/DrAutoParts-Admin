@@ -9,6 +9,7 @@ export const API_URLS = {
         GET_BY_ID: "/api/v1/products/",
         SEARCH: "/api/v1/products",
         UPDATE: "/api/v1/products/update/",
+        DELETE: "/api/v1/products/delete/",
     },
     CATEGORY: {
         CREATE: "/api/v1/category/new",
@@ -18,14 +19,14 @@ export const API_URLS = {
         GET_BY_NAME: "/api/v1/category/",
         GET_ALL: "/api/v1/category",
     },
-        MODELO: {
-            CREATE: "/api/v1/modelo/new",
-            GET_ALL: "/api/v1/modelo",
-            GET_BY_ID: "/api/v1/modelo/",
-            UPDATE: "/api/v1/modelo/",
-            DELETE: "/api/v1/modelo/",
-            GET_BY_NAME: "/api/v1/modelo/name/",
-        },
+    MODELO: {
+        CREATE: "/api/v1/modelo/new",
+        GET_ALL: "/api/v1/modelo",
+        GET_BY_ID: "/api/v1/modelo/",
+        UPDATE: "/api/v1/modelo/",
+        DELETE: "/api/v1/modelo/",
+        GET_BY_NAME: "/api/v1/modelo/name/",
+    },
     FORNECEDOR: {
         CREATE: "/api/v1/fornecedor/new",
         GET_ALL: "/api/v1/fornecedor",

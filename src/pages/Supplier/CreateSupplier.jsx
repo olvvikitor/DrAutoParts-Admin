@@ -12,7 +12,7 @@ export default function CreateSupplier() {
 
 
     const [supplierCreateData, setSupplierCreateData] = useState({
-        nome: "",
+        name: "",
         code: "",
     });
 
@@ -46,7 +46,7 @@ export default function CreateSupplier() {
         e.preventDefault();
         let newErrors = {};
 
-        if (!supplierCreateData.nome.trim()) newErrors.nome = "Nome é obrigatório";
+        if (!supplierCreateData.name.trim()) newErrors.name = "Nome é obrigatório";
         if (!supplierCreateData.code.trim()) newErrors.code = "Código é obrigatório";
 
         setErrorInput(newErrors);
@@ -101,19 +101,19 @@ export default function CreateSupplier() {
                     transition={{ duration: 0.5 }}
                 >
                     <form onSubmit={handleSubmit} className="w-[95%] lg:w-[40%]">
-                        <div className={errorInput.nome ? "mb-0" : "mb-6"}>
+                        <div className={errorInput.name ? "mb-0" : "mb-6"}>
                             <label htmlFor="nome" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                                 Nome do Fornecedor
                             </label>
                             <input
                                 type="text"
-                                name="nome"
-                                value={supplierCreateData.nome}
+                                name="name"
+                                value={supplierCreateData.name}
                                 onChange={handleChange}
                                 className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-zinc-300"
                                 placeholder="Digite o nome do fornecedor"
                             />
-                            {errorInput.nome && <p className="text-red-500 text-sm mb-2">{errorInput.nome}</p>}
+                            {errorInput.name && <p className="text-red-500 text-sm mb-2">{errorInput.name}</p>}
                         </div>
 
                         <div className={errorInput.code ? "mb-0" : "mb-6"}>

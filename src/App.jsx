@@ -4,6 +4,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { SupplierProvider } from "./contexts/SupplierContext";
 import { ModelProvider } from "./contexts/ModelContext";
 import { CategoryProvider } from "./contexts/CategoryContext";
+import { Productprovider } from "./contexts/ProductContext";
+
 export default function App() {
 
   return (
@@ -13,7 +15,9 @@ export default function App() {
           <CategoryProvider>
             <ModelProvider>
               <SupplierProvider>
-                <AppRoutes />
+                <Productprovider>
+                  <AppRoutes />
+                </Productprovider>
               </SupplierProvider>
             </ModelProvider>
           </CategoryProvider>
