@@ -61,6 +61,9 @@ export function Productprovider({ children }) {
                 modelId: productData.modelId.map(Number),
                 fornecedorId: productData.fornecedorId.map(Number),
             };
+
+            console.log("Payload final antes do FormData (CREATE):", payload);
+
     
             // Criação do FormData
             const formData = new FormData();
@@ -78,7 +81,10 @@ export function Productprovider({ children }) {
             // Log do conteúdo do formData (debug)
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
-            }
+            } 
+
+            console.log("FormData final no FormData (CREATE):", formData);
+
     
             const response = await axios.post(
                 `${BASE_URL}${API_URLS.PRODUCT.CREATE}`,
@@ -111,38 +117,52 @@ export function Productprovider({ children }) {
     };
     
 
-    // ✅ UPDATE Produto com Token, ID e dados
+    // ✅ UPDATE Produto com Token, ID e dados new
     const updateProduct = async (productId, productData) => {
         setLoading(true);
         setError(null);
-
+    
         try {
-            // Convertendo todos os campos numéricos
+            // Convertendo campos para o tipo correto
             const payload = {
                 ...productData,
                 price: Number(productData.price),
                 priceoast: Number(productData.priceoast),
                 categoryId: Number(productData.categoryId),
-                modelId: productData.modelId?.map(Number) || [], // Converte array de strings para números
+                modelId: productData.modelId?.map(Number) || [],
                 fornecedorId: productData.fornecedorId?.map(Number) || []
             };
-
+    
             console.log("Payload final antes do FormData (UPDATE):", payload);
-
+    
+            // Criação do FormData
             const formData = new FormData();
+    
             Object.entries(payload).forEach(([key, value]) => {
-                if (key === 'modelId' || key === 'fornecedorId') {
-                    value.forEach(id => formData.append(key, id));
+                if (Array.isArray(value)) {
+                    value.forEach((val) => {
+                        formData.append(key, val);
+                    });
                 } else if (value !== null && value !== undefined) {
-                    formData.append(key, value);
+                    // Tratamento especial para a imagem
+                    if (key === 'image') {
+                        // Se for um arquivo (nova imagem), adiciona ao FormData
+                        if (value instanceof File) {
+                            formData.append(key, value);
+                        }
+                        // Se for string (URL da imagem existente), não faz nada (mantém a imagem atual)
+                        // Se for null/undefined, não adiciona (também mantém a imagem atual)
+                    } else {
+                        formData.append(key, value);
+                    }
                 }
             });
-
-            // Log do FormData antes do envio
+    
+            // Log do conteúdo do formData (debug)
             for (let [key, value] of formData.entries()) {
-                console.log(key, value);
+                console.log(`${key}: ${value}`);
             }
-
+    
             const response = await axios.put(
                 `${BASE_URL}${API_URLS.PRODUCT.UPDATE}${productId}`,
                 formData,
@@ -153,11 +173,11 @@ export function Productprovider({ children }) {
                     },
                 }
             );
-
+    
             console.log("Resposta do servidor (UPDATE):", response.data);
-            await fetchProducts(); // Atualiza a lista de produtos após a atualização
+            await fetchProducts();
             return true;
-
+    
         } catch (error) {
             console.error("Erro completo (UPDATE):", {
                 message: error.message,
