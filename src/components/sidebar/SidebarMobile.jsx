@@ -1,8 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { RxCross2 } from "react-icons/rx";
+import { RxDashboard, RxClipboardCopy, RxArchive, RxShare1, RxTransform, RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 
-export default function SidebarMobile ({ isOpen, toggleSidebar }) {
+export default function SidebarMobile({ isOpen, toggleSidebar }) {
+    // Mapeamento dos itens do menu com seus respectivos ícones
+    const menuItems = [
+        { path: "/home", label: "Dashboard", icon: <RxDashboard size={20} /> },
+        { path: "/product", label: "Produtos", icon: <RxArchive size={20} /> },
+        { path: "/category", label: "Categorias", icon: <RxShare1 size={20} /> },
+        { path: "/model", label: "Modelos", icon: <RxTransform size={20} /> },
+        { path: "/supplier", label: "Fornecedores", icon: <RxClipboardCopy size={20} /> },
+    ];
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -20,15 +29,18 @@ export default function SidebarMobile ({ isOpen, toggleSidebar }) {
                     </div>
                     <nav className="mt-6">
                         <ul className='text-zinc-700 text-lg font-semibold dark:text-zinc-300'>
-                            <li><Link to="/home" onClick={toggleSidebar}>Dashboard</Link></li>
-                            <li><Link to="/product" onClick={toggleSidebar}>Produtos</Link></li>
-                            <li><Link to="/category" onClick={toggleSidebar}>Categorias</Link></li>
-                            <li><Link to="/model" onClick={toggleSidebar}>Modelos</Link></li>
-                            <li><Link to="/supplier" onClick={toggleSidebar}>Fornecedores</Link></li>
+                            {menuItems.map((item) => (
+                                <li key={item.path} className="flex items-center gap-3 py-2">
+                                    {item.icon}
+                                    <Link to={item.path} onClick={toggleSidebar}>
+                                        {item.label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </nav>
                 </motion.div>
             )}
         </AnimatePresence>
     );
-};
+}

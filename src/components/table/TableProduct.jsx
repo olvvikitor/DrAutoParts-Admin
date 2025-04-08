@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { useNavigate } from "react-router";
 import { ProductContext } from "../../contexts/ProductContext";
-import DeleteModal from "../modals/DeleteModal";
+import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import MoreInfoModal from "../modals/MoreInfoModal";
@@ -24,8 +24,6 @@ export default function TableProduct({ searchTerm }) {
         product.code.toLowerCase().includes(searchTerm.toLowerCase())
 
     );
-
-    console.log("getProduct: ", getProducts);
 
     useEffect(() => {
         fetchProducts(); // 🔄 Sempre busca os fornecedores ao montar
@@ -166,7 +164,7 @@ export default function TableProduct({ searchTerm }) {
     return (
         <div className="flex flex-col overflow-x-auto min-w-[250px] rounded-lg dark:bg-gray-700 dark:text-gray-400 ">
             <div className="overflow-x-auto">
-                <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-start rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-4 py-3">Nome</th>
@@ -184,7 +182,7 @@ export default function TableProduct({ searchTerm }) {
                     </thead>
                     <tbody>
                         {currentItems.map((item) => (
-                            <tr key={item.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr key={item.id} className="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item.name}
                                 </td>
@@ -290,9 +288,9 @@ export default function TableProduct({ searchTerm }) {
             </nav>
             {/* Modais */}
             {isDeleteModalOpen && (
-                <DeleteModal
-                    titleDelete="Deletar Produto"
-                    textDelete={
+                <ConfirmModal
+                    titleConfirm="Deletar Produto"
+                    textConfirm={
                         <>
                             Tem certeza que deseja deletar
                             <span className="text-xl font-bold"> {productToDelete.name} </span>
@@ -301,6 +299,7 @@ export default function TableProduct({ searchTerm }) {
                     }
                     onClose={closeDeleteModal}
                     onConfirm={confirmDelete}
+                    titleButton={"Deletar"}
                 />
             )}
 

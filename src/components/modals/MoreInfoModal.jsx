@@ -25,7 +25,7 @@ export default function MoreInfoModal({ title, items, imgUrl, trigger }) {
                         {imgUrl && <img src={imgUrl} alt="Imagem" className="w-full h-48 object-cover rounded-lg mb-4" />}
 
                         {items?.length > 0 ? (
-                            <ul>
+                            <ul className="text-start">
                                 {items.map((item, index) => {
                                     return (
                                         <li key={index} className="border-b py-2">
