@@ -20,8 +20,12 @@ export default function TableProduct({ searchTerm }) {
     const navigate = useNavigate();
 
     const filteredProduct = getProducts.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.code.toLowerCase().includes(searchTerm.toLowerCase())
+
     );
+
+    console.log("getProduct: ", getProducts);
 
     useEffect(() => {
         fetchProducts(); // 🔄 Sempre busca os fornecedores ao montar
@@ -55,7 +59,7 @@ export default function TableProduct({ searchTerm }) {
         try {
 
             const sucess = await deleteProduct(productToDelete.id);
-            
+
             if (sucess) {
                 setShowSuccessModal(true);
 
@@ -162,10 +166,11 @@ export default function TableProduct({ searchTerm }) {
     return (
         <div className="flex flex-col overflow-x-auto min-w-[250px] rounded-lg dark:bg-gray-700 dark:text-gray-400 ">
             <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-4 py-3">Nome</th>
+                            <th scope="col" className="px-4 py-3">Código</th>
                             <th scope="col" className="px-4 py-3">Descrição</th>
                             <th scope="col" className="px-4 py-3">Tipo</th>
                             <th scope="col" className="px-4 py-3">Preço</th>
@@ -183,6 +188,7 @@ export default function TableProduct({ searchTerm }) {
                                 <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item.name}
                                 </td>
+                                <td className="px-4 py-3">{item.code}</td>
                                 <td className="px-4 py-3">{item.descricao}</td>
                                 <td className="px-4 py-3">{item.tipo}</td>
                                 <td className="px-4 py-3">{item.price}</td>
@@ -235,6 +241,7 @@ export default function TableProduct({ searchTerm }) {
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     &nbsp;
                                 </th>
+                                <td className="px-4 py-3">&nbsp;</td>
                                 <td className="px-4 py-3">&nbsp;</td>
                                 <td className="px-4 py-3">&nbsp;</td>
                                 <td className="px-4 py-3">&nbsp;</td>

@@ -24,8 +24,12 @@ export default function TableSupplier({ searchTerm }) {
     const navigate = useNavigate();
 
     const filteredSuppliers = getSuppliers.filter((supplier) =>
-        supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+        supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
+
     );
+
+    console.log("getSupplier: ", getSuppliers);
 
     useEffect(() => {
         fetchSuppliers();
@@ -67,7 +71,7 @@ export default function TableSupplier({ searchTerm }) {
                 }, 2000);
 
             }
-            
+
         } catch (error) {
             setShowErrorModal(true);
             setTimeout(() => {
