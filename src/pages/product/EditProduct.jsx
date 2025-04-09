@@ -109,7 +109,7 @@ export default function EditProduct() {
         };
     }, [previewImage]);
 
-    // Supplier and model input handlers (same as create)
+    // Supplier e model input handlers 
     const addSupplierInput = () => {
         setSupplierInputs([...supplierInputs, ""]);
     };

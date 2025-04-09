@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function DeleteModal({ onClose, onConfirm, titleDelete, textDelete }) {
+export default function ConfirmModal({ onClose, onConfirm, titleConfirm, textConfirm, titleButton }) {
     return (
         <motion.div
             className="fixed inset-0 flex items-center justify-center z-50"
@@ -23,10 +23,10 @@ export default function DeleteModal({ onClose, onConfirm, titleDelete, textDelet
                 transition={{ duration: 0.3 }}
             >
                 <h2 className="text-xl font-semibold mb-4 text-zinc-700 dark:text-zinc-300">
-                    {titleDelete}
+                    {titleConfirm}
                 </h2>
                 <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                    {textDelete}
+                    {textConfirm}
                 </p>
                 <div className="flex justify-end gap-3">
                     <button
@@ -41,7 +41,7 @@ export default function DeleteModal({ onClose, onConfirm, titleDelete, textDelet
                         onClick={onConfirm}
                         className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer"
                     >
-                        Deletar
+                        {titleButton}
                     </button>
                 </div>
             </motion.div>

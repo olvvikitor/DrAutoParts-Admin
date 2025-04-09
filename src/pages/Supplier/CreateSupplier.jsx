@@ -58,7 +58,7 @@ export default function CreateSupplier() {
 
             if (success) {
                 // Limpeza de dados e exibição do modal de sucesso
-                setSupplierCreateData({ nome: "", code: "" });
+                setSupplierCreateData({ name: "", code: "" });
                 setErrorInput({});
                 setShowSuccessModal(true);
 

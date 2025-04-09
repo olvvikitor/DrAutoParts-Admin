@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { CategoryContext } from "../../contexts/CategoryContext";
 import { useNavigate } from "react-router";
-import DeleteModal from "../modals/DeleteModal";
+import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
@@ -252,9 +252,9 @@ export default function TableCategory({ searchTerm }) {
             </nav>
             {/* Modais */}
             {isDeleteModalOpen && (
-                <DeleteModal
-                    titleDelete="Deletar Categoria"
-                    textDelete={
+                <ConfirmModal
+                    titleConfirm="Deletar Categoria"
+                    textConfirm={
                         <>
                             Tem certeza que deseja deletar
                             <span className="text-xl font-bold"> {categoryToDelete.name} </span>
@@ -263,6 +263,7 @@ export default function TableCategory({ searchTerm }) {
                     }
                     onClose={closeDeleteModal}
                     onConfirm={confirmDelete}
+                    titleButton={"Deletar"}
                 />
             )}
 

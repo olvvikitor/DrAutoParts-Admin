@@ -289,17 +289,15 @@ export default function CreateProduct() {
 
                             {/* Tipo */}
                             <div className="mb-6">
-                                <label className={`block text-sm font-medium ${errorInput.tipo ? 'text-red-500' : 'text-zinc-700 dark:text-zinc-300'}`}>
+                                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                                     Tipo
                                 </label>
                                 <select
                                     name="tipo"
                                     value={ProductCreateData.tipo}
                                     onChange={handleChange}
-                                    className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 ${errorInput.tipo
-                                        ? 'border-red-500 dark:border-red-500'
-                                        : 'border-zinc-300 dark:border-zinc-600'
-                                        }`}
+                                    className= "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 border-zinc-300 dark:border-zinc-600"
+                                        
                                 >
                                     <option value="">Selecione um tipo</option>
                                     <option value="JOGO">JOGO</option>

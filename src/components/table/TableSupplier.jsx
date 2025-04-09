@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { SupplierContext } from "../../contexts/SupplierContext";
 import { useNavigate } from "react-router";
-import DeleteModal from "../modals/DeleteModal";
+import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
@@ -24,7 +24,9 @@ export default function TableSupplier({ searchTerm }) {
     const navigate = useNavigate();
 
     const filteredSuppliers = getSuppliers.filter((supplier) =>
-        supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+        supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
+
     );
 
     useEffect(() => {
@@ -67,7 +69,7 @@ export default function TableSupplier({ searchTerm }) {
                 }, 2000);
 
             }
-            
+
         } catch (error) {
             setShowErrorModal(true);
             setTimeout(() => {
@@ -242,9 +244,9 @@ export default function TableSupplier({ searchTerm }) {
             </nav>
             {/* Modais */}
             {isDeleteModalOpen && (
-                <DeleteModal
-                    titleDelete="Deletar Fornecedor"
-                    textDelete={
+                <ConfirmModal
+                    titleConfirm="Deletar Fornecedor"
+                    textConfirm={
                         <>
                             Tem certeza que deseja deletar
                             <span className="text-xl font-bold"> {supplierToDelete.name} </span>
@@ -254,6 +256,7 @@ export default function TableSupplier({ searchTerm }) {
                     }
                     onClose={closeDeleteModal}
                     onConfirm={confirmDelete}
+                    titleButton={"Deletar"}
                 />
             )}
 

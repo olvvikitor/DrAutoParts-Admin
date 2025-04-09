@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { useNavigate } from "react-router";
 import { ModelContext } from "../../contexts/ModelContext";
-import DeleteModal from "../modals/DeleteModal";
+import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
@@ -10,9 +10,6 @@ import LoadingSpinner from "../loading/LoadingSpinner";
 export default function TableModel({ searchTerm }) {
 
     const { getModels, fetchModels, deleteModel, loading } = useContext(ModelContext);
-
-    console.log("na tabela models ", getModels);
-
 
     const [modelToDelete, setModelToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -249,9 +246,9 @@ export default function TableModel({ searchTerm }) {
             </nav>
             {/* Modais */}
             {isDeleteModalOpen && (
-                <DeleteModal
-                    titleDelete="Deletar Modelo"
-                    textDelete={
+                <ConfirmModal
+                    titleConfirm="Deletar Modelo"
+                    textConfirm={
                         <>
                             Tem certeza que deseja deletar
                             <span className="text-xl font-bold"> {modelToDelete.name} </span>
@@ -260,6 +257,7 @@ export default function TableModel({ searchTerm }) {
                     }
                     onClose={closeDeleteModal}
                     onConfirm={confirmDelete}
+                    titleButton={"Deletar"}
                 />
             )}
 
