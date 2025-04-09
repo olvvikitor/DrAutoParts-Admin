@@ -77,7 +77,7 @@ export function ModelProvider({ children }) {
             }
         } finally {
             setLoading(false)
-        }   
+        }
     }
 
     const updateModel = async (modeloId, updateModelo) => {
@@ -107,7 +107,7 @@ export function ModelProvider({ children }) {
                 if (status === 409) errorMessage = "Modelo já existe com esse nome";
                 setError(errorMessage);
             }
-        } finally{
+        } finally {
             setLoading(false)
 
         }
@@ -120,18 +120,31 @@ export function ModelProvider({ children }) {
 
         try {
 
-            await axios.delete(`${BASE_URL}${API_URLS.MODELO.DELETE}${modeloId}`, {
+            const response = await axios.delete(`${BASE_URL}${API_URLS.MODELO.DELETE}${modeloId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            console.log("Modelo deletado com sucesso context!")
-            await fetchModels();
+            if (response.status === 200 || response.status === 201) {
+                console.log("Modelo excluída com sucesso context:", response.data);
+                await fetchModels(); // 🔄 Atualiza a lista de modelos
+                return true;
+
+            } else {
+                throw new Error('Falha ao excluir categoria context');
+            }
 
         } catch (error) {
-            console.error("Error ao excluir modelo!");
-        } finally{
+            console.error("Erro ao excluir modelo", error.response?.data || error.message);
+            let errorMessage = "Erro ao excluir modelo. Tente novamente mais tarde.";
+            if (error.response) {
+                const status = error.response.status;
+                if (status === 401) errorMessage = "Não autenticado";
+                if (status === 404) errorMessage = "Modelo não encontrada";
+                if (status === 500) errorMessage = "Erro no servidor. Por favor, tente mais tarde!";
+            }
+            setError(errorMessage); // Exibe a mensagem de erro no modal
+        } finally {
             setLoading(false)
-
         }
     }
 
