@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { useNavigate } from "react-router";
 import { ModelContext } from "../../contexts/ModelContext";
+import { ProductContext } from "../../contexts/ProductContext";
 import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
@@ -9,7 +10,8 @@ import LoadingSpinner from "../loading/LoadingSpinner";
 
 export default function TableModel({ searchTerm }) {
 
-    const { getModels, fetchModels, deleteModel, loading } = useContext(ModelContext);
+    const { getModels, fetchModels, deleteModel, loading, error, setError } = useContext(ModelContext);
+    const { getProducts} = useContext(ProductContext);
 
     const [modelToDelete, setModelToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -31,6 +33,18 @@ export default function TableModel({ searchTerm }) {
     };
 
     const handleDeleteClick = (model) => {
+        // Verifica se há produtos vinculados a este modelo
+        const productsWithModel = getProducts.filter(product =>
+            product.modelos && product.modelos.some(m => m.id === model.id)
+        );
+        console.log("productsWithModel.length ", productsWithModel.length )
+        if (productsWithModel.length > 0) {
+            setError("Não é possível deletar um modelo vinculado a produtos.");
+            setShowErrorModal(true);
+            setTimeout(() => setShowErrorModal(false), 2000);
+            return;
+        }
+
         setModelToDelete(model);
         setIsDeleteModalOpen(true);
     };
@@ -262,7 +276,7 @@ export default function TableModel({ searchTerm }) {
             )}
 
             {showSuccessModal && <SucessModal titleSucess="Modelo Deletado com sucesso!" />}
-            {showErrorModal && <ErrorModal titleError="Erro ao deletar modelo!" />}
+            {showErrorModal && <ErrorModal titleError="Erro ao deletar modelo!" textError={error} />}
             {loading && <LoadingSpinner />}
 
         </div>

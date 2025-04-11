@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { SupplierContext } from "../../contexts/SupplierContext";
+import { ProductContext } from "../../contexts/ProductContext";
 import { useNavigate } from "react-router";
 import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
@@ -12,9 +13,12 @@ export default function TableSupplier({ searchTerm }) {
         getSuppliers,
         deleteSupplier,
         error,
+        setError,
         fetchSuppliers,
         loading
     } = useContext(SupplierContext);
+
+    const { getProducts } = useContext(ProductContext);
 
     const [supplierToDelete, setSupplierToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,6 +42,18 @@ export default function TableSupplier({ searchTerm }) {
     };
 
     const handleDeleteClick = (supplier) => {
+        // Verifica se há produtos vinculados a este fornecedor
+        const productsWithSupplier = getProducts.filter(product =>
+            product.fornecedores && product.fornecedores.some(f => f.id === supplier.id)
+        );
+
+        if (productsWithSupplier.length > 0) {
+            setError("Não é possível deletar um fornecedor vinculado a produtos.");
+            setShowErrorModal(true);
+            setTimeout(() => setShowErrorModal(false), 2000);
+            return;
+        }
+
         setSupplierToDelete(supplier);
         setIsDeleteModalOpen(true);
     };
@@ -261,7 +277,7 @@ export default function TableSupplier({ searchTerm }) {
             )}
 
             {showSuccessModal && <SucessModal titleSucess="Fornecedor Deletado com sucesso!" />}
-            {showErrorModal && <ErrorModal titleError="Erro ao deletar fornecedor!" />}
+            {showErrorModal && <ErrorModal titleError="Erro ao deletar fornecedor!" textError={error} />}
             {loading && <LoadingSpinner />}
 
         </div>

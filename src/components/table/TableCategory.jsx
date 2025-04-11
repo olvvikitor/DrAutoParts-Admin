@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { RxArrowRight, RxArrowLeft, RxPencil2, RxTrash } from "react-icons/rx";
 import { CategoryContext } from "../../contexts/CategoryContext";
+import { ProductContext } from "../../contexts/ProductContext";
 import { useNavigate } from "react-router";
 import ConfirmModal from "../modals/ConfirmModal";
 import SucessModal from "../../components/modals/SucessModal";
@@ -16,6 +17,11 @@ export default function TableCategory({ searchTerm }) {
         fetchCategories,
         loading
     } = useContext(CategoryContext);
+
+    const { getProducts } = useContext(ProductContext);
+
+    console.log("vendo produtos em tabela de categoria: ", getProducts);
+    console.log("vendo categorias em tabela de categoria: ", getCategories);
 
     const [categoryToDelete, setCategoryToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -50,17 +56,29 @@ export default function TableCategory({ searchTerm }) {
     };
 
     const handleDeleteClick = (category) => {
-        console.log("vendo id delete category, ", category);
+        // Verifica se há produtos nesta categoria
+        const productsInCategory = getProducts.filter(product =>
+            product.categoria && product.categoria.id === category.id
+        );
+
+        if (productsInCategory.length > 0) {
+            setError("Não é possível deletar uma categoria com produtos associados.");
+            setShowErrorModal(true);
+            setTimeout(() => setShowErrorModal(false), 2000);
+            return;
+        }
+
+        // Se não houver produtos, procede com a exclusão
         setCategoryToDelete(category);
         setIsDeleteModalOpen(true);
     };
-
+    
     const closeDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setCategoryToDelete(null);
     };
 
-    const confirmDelete = async () => {  // ⬅️ Tornar a função assíncrona
+    const confirmDelete = async () => {
         if (!categoryToDelete.id) {
             setShowErrorModal(true);
             setTimeout(() => {
@@ -71,6 +89,9 @@ export default function TableCategory({ searchTerm }) {
             return;
         }
 
+        console.log("vendo id para ser deletado: ", categoryToDelete.id)
+
+
         try {
             const sucess = await deleteCategory(categoryToDelete.id);
 
@@ -80,7 +101,7 @@ export default function TableCategory({ searchTerm }) {
 
                 setTimeout(() => setShowSuccessModal(false), 2000);
             }
-            
+
         } catch (error) {
             setShowErrorModal(true);
             setTimeout(() => {
