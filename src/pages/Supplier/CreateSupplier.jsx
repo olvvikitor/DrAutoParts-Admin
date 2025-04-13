@@ -81,7 +81,7 @@ export default function CreateSupplier() {
                 Fornecedores
             </motion.h1>
             <div className="bg-white dark:bg-gray-700 text-zinc-700 dark:text-zinc-300 rounded-xl mt-5 p-4">
-                <Link to="/supplier">
+                <Link to="/supplier" onClick={() =>{setError(null)}}>
                     <RxArrowLeft size={25} />
                 </Link>
 
@@ -135,6 +135,7 @@ export default function CreateSupplier() {
                             <Link to="/supplier">
                                 <button
                                     type="button"
+                                    onClick={() =>{setError(null)}}
                                     className="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-500 cursor-pointer"
                                 >
                                     Cancelar

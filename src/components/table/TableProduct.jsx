@@ -47,6 +47,7 @@ export default function TableProduct({ searchTerm }) {
 
     const handleEdit = (product) => {
         navigate(`/product/edit/${product.id}`);
+        setError(null)
     };
 
     const handleDeleteClick = (product) => {

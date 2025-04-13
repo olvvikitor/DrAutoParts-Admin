@@ -27,7 +27,7 @@ export default function Supplier() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <Link to="/model/create" className="flex items-center gap-3 my-5 curso-pointer"
+                    <Link to="/model/create" onClick={() =>{setError(null)}} className="flex items-center gap-3 my-5 curso-pointer"
                     >
                         <button
                             className="text-zinc-700 dark:text-zinc-300 bg-zinc-200/40 dark:bg-zinc-500/50 border-1 border-zinc-400 rounded-md p-2 cursor-pointer"

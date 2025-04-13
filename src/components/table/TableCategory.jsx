@@ -53,6 +53,7 @@ export default function TableCategory({ searchTerm }) {
 
     const handleEdit = (category) => {
         navigate(`/category/edit/${category.id}`);
+        setError(null);
     };
 
     const handleDeleteClick = (category) => {

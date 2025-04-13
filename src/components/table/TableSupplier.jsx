@@ -34,11 +34,15 @@ export default function TableSupplier({ searchTerm }) {
     );
 
     useEffect(() => {
-        fetchSuppliers();
-    }, []);
+        if (getSuppliers.length === 0) {  // Só chama se não houver fornecedores carregados
+            fetchSuppliers();
+        }
+    }, [getSuppliers, fetchSuppliers]);
+
 
     const handleEdit = (supplier) => {
         navigate(`/supplier/edit/${supplier.id}`);
+        setError(null);
     };
 
     const handleDeleteClick = (supplier) => {
@@ -111,7 +115,7 @@ export default function TableSupplier({ searchTerm }) {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(getSuppliers.length / itemsPerPage);
+        const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
