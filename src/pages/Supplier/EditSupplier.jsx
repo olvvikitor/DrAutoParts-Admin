@@ -96,7 +96,7 @@ export default function EditSupplier() {
                 Fornecedores
             </motion.h1>
             <div className="bg-white dark:bg-gray-700 text-zinc-700 dark:text-zinc-300 rounded-xl mt-5 p-4">
-                <Link to="/supplier">
+                <Link to="/supplier" onClick={() =>{setError(null)}}>
                     <RxArrowLeft size={25} />
                 </Link>
                 <motion.h1
@@ -155,6 +155,7 @@ export default function EditSupplier() {
                             </Link>
                             <button
                                 type="submit"
+                                onClick={() =>{setError(null)}}
                                 className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 cursor-pointer"
                             >
                                 Salvar Edição

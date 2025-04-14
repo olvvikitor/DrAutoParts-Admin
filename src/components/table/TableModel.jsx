@@ -30,6 +30,7 @@ export default function TableModel({ searchTerm }) {
 
     const handleEdit = (model) => {
         navigate(`/model/edit/${model.id}`);
+        setError(null);
     };
 
     const handleDeleteClick = (model) => {

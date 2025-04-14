@@ -28,7 +28,9 @@ export default function Category() {
                     transition={{ duration: 0.5 }}
                 >
                     <Link to="/category/create" className="flex items-center gap-3 my-5 curso-pointer">
-                        <button className="text-zinc-700 dark:text-zinc-300 bg-zinc-200/40 dark:bg-zinc-500/50 border-1 border-zinc-400 rounded-md p-2 cursor-pointer">
+                        <button     
+                            onClick={() =>{setError(null)}} 
+                            className="text-zinc-700 dark:text-zinc-300 bg-zinc-200/40 dark:bg-zinc-500/50 border-1 border-zinc-400 rounded-md p-2 cursor-pointer">
                             <RxPlus size={20} />
                         </button>
                         <h3>Adicionar nova categoria</h3>

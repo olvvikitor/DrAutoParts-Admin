@@ -19,11 +19,27 @@ export default function TableProduct({ searchTerm }) {
 
     const navigate = useNavigate();
 
-    const filteredProduct = getProducts.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.code.toLowerCase().includes(searchTerm.toLowerCase())
+    console.log("retorno de productos: ", getProducts);
 
-    );
+
+    // const filteredProduct = getProducts.filter((product) =>
+    //     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     product.code.toLowerCase().includes(searchTerm.toLowerCase())
+
+    // );
+    
+    const filteredProduct = getProducts.filter((product) => {
+        // Verifica se há correspondência no nome ou código do produto
+        const matchesProduct = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            product.code.toLowerCase().includes(searchTerm.toLowerCase());
+
+        // Verifica se há correspondência nos códigos dos fornecedores
+        const matchesSupplierCode = product.fornecedores.some(supplier =>
+            supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        return matchesProduct || matchesSupplierCode;
+    });
 
     useEffect(() => {
         fetchProducts(); // 🔄 Sempre busca os fornecedores ao montar
@@ -31,6 +47,7 @@ export default function TableProduct({ searchTerm }) {
 
     const handleEdit = (product) => {
         navigate(`/product/edit/${product.id}`);
+        setError(null)
     };
 
     const handleDeleteClick = (product) => {

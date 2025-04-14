@@ -82,7 +82,7 @@ export default function CreateModel() {
                 Modelos
             </motion.h1>
             <div className="bg-white dark:bg-gray-700 text-zinc-700 dark:text-zinc-300 rounded-xl mt-5 p-4">
-                <Link to="/model">
+                <Link to="/model" onClick={() =>{setError(null)}}>
                     <RxArrowLeft size={25} />
                 </Link>
 
@@ -151,6 +151,7 @@ export default function CreateModel() {
                             <Link to="/model">
                                 <button
                                     type="button"
+                                    onClick={() =>{setError(null)}}
                                     className="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-500 cursor-pointer"
                                 >
                                     Cancelar
