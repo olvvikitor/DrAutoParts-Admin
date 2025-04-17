@@ -7,7 +7,7 @@ export const API_URLS = {
         CREATE: "/api/v1/products/new",
         GET_ALL: "/api/v1/products/all",
         GET_BY_ID: "/api/v1/products/",
-        SEARCH: "/api/v1/products",
+        SEARCH: "/api/v1/products/",
         UPDATE: "/api/v1/products/update/",
         DELETE: "/api/v1/products/delete/",
     },
