@@ -4,7 +4,7 @@ import { RxPlus, RxMagnifyingGlass  } from "react-icons/rx";
 import TableProduct from "../../components/table/TableProduct";
 import { Link } from "react-router";
 
-export default function Supplier() {
+export default function Product() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isFocused, setIsFocused] = useState(false);
 

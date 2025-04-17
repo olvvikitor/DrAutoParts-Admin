@@ -8,21 +8,26 @@ import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableModel({ searchTerm }) {
+export default function TableModel({ data }) {
+
+    console.log("vendo data no table:", data)
 
     const { getModels, fetchModels, deleteModel, loading, error, setError } = useContext(ModelContext);
-    const { getProducts} = useContext(ProductContext);
+    const { getProducts } = useContext(ProductContext);
 
     const [modelToDelete, setModelToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
+    const tableData = Array.isArray(data) ? data : (data ? [data] : []);
+
+
     const navigate = useNavigate();
 
-    const filteredModel = getModels.filter((model) =>
-        model.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // const filteredModel = getModels.filter((model) =>
+    //     model.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     useEffect(() => {
         fetchModels(); // 🔄 Sempre busca os fornecedores ao montar
@@ -38,7 +43,7 @@ export default function TableModel({ searchTerm }) {
         const productsWithModel = getProducts.filter(product =>
             product.modelos && product.modelos.some(m => m.id === model.id)
         );
-        console.log("productsWithModel.length ", productsWithModel.length )
+        console.log("productsWithModel.length ", productsWithModel.length)
         if (productsWithModel.length > 0) {
             setError("Não é possível deletar um modelo vinculado a produtos.");
             setShowErrorModal(true);
@@ -99,7 +104,7 @@ export default function TableModel({ searchTerm }) {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredModel.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = tableData.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -107,7 +112,7 @@ export default function TableModel({ searchTerm }) {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(getModels.length / itemsPerPage);
+        const totalPages = Math.ceil(tableData.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
@@ -248,8 +253,8 @@ export default function TableModel({ searchTerm }) {
                     <li>
                         <button
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(getModels.length / itemsPerPage)}
-                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getModels.length / itemsPerPage)
+                            disabled={currentPage === Math.ceil(tableData.length / itemsPerPage)}
+                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(tableData.length / itemsPerPage)
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
                                 : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
