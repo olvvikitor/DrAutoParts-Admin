@@ -8,7 +8,7 @@ import ErrorModal from "../../components/modals/ErrorModal";
 import MoreInfoModal from "../modals/MoreInfoModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableProduct({ searchTerm }) {
+export default function TableProduct({ data }) {
 
     const { getProducts, fetchProducts, deleteProduct, loading } = useContext(ProductContext);
 
@@ -21,6 +21,7 @@ export default function TableProduct({ searchTerm }) {
 
     console.log("retorno de productos: ", getProducts);
 
+    const tableData = Array.isArray(data) ? data : (data ? [data] : []);
 
     // const filteredProduct = getProducts.filter((product) =>
     //     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -28,18 +29,18 @@ export default function TableProduct({ searchTerm }) {
 
     // );
     
-    const filteredProduct = getProducts.filter((product) => {
-        // Verifica se há correspondência no nome ou código do produto
-        const matchesProduct = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.code.toLowerCase().includes(searchTerm.toLowerCase());
+    // const filteredProduct = getProducts.filter((product) => {
+    //     // Verifica se há correspondência no nome ou código do produto
+    //     const matchesProduct = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //         product.code.toLowerCase().includes(searchTerm.toLowerCase());
 
-        // Verifica se há correspondência nos códigos dos fornecedores
-        const matchesSupplierCode = product.fornecedores.some(supplier =>
-            supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+    //     // Verifica se há correspondência nos códigos dos fornecedores
+    //     const matchesSupplierCode = product.fornecedores.some(supplier =>
+    //         supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
+    //     );
 
-        return matchesProduct || matchesSupplierCode;
-    });
+    //     return matchesProduct || matchesSupplierCode;
+    // });
 
     useEffect(() => {
         fetchProducts(); // 🔄 Sempre busca os fornecedores ao montar
@@ -103,7 +104,7 @@ export default function TableProduct({ searchTerm }) {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredProduct.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = tableData.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -111,7 +112,7 @@ export default function TableProduct({ searchTerm }) {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(getProducts.length / itemsPerPage);
+        const totalPages = Math.ceil(tableData.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
@@ -292,8 +293,8 @@ export default function TableProduct({ searchTerm }) {
                     <li>
                         <button
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(getProducts.length / itemsPerPage)}
-                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getProducts.length / itemsPerPage)
+                            disabled={currentPage === Math.ceil(tableData.length / itemsPerPage)}
+                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(tableData.length / itemsPerPage)
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
                                 : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}

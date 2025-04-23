@@ -49,6 +49,23 @@ export function ModelProvider({ children }) {
             throw error;
         }
     };
+    
+    const fetchModelByName = async (name) => {
+        try {
+            const response = await axios.get(`${BASE_URL}${API_URLS.MODELO.GET_BY_NAME}${name}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            
+            // Converta o resultado único em um array
+            return Array.isArray(response.data) ? response.data : [response.data];
+            
+        } catch (error) {
+            console.error("Erro ao buscar modelo pelo nome:", error);
+            throw error;
+        }
+    };
 
     const addModel = async (modeloData) => {
         setLoading(true)
@@ -149,7 +166,7 @@ export function ModelProvider({ children }) {
     }
 
     return (
-        <ModelContext.Provider value={{ getModels, fetchModels, fetchModelById, deleteModel, addModel, updateModel, setError, loading, error }}>
+        <ModelContext.Provider value={{ getModels, fetchModels, fetchModelById, fetchModelByName, deleteModel, addModel, updateModel, setError, loading, error }}>
             {children}
         </ModelContext.Provider>
     )

@@ -47,10 +47,30 @@ export function Productprovider({ children }) {
         }
     }
 
+    const fetchProductByName = async (name) => {
+        try {
+            const response = await axios.get(`${BASE_URL}${API_URLS.PRODUCT.SEARCH}`, {
+                params: { filter: name },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
+            if (!response.data || response.data.length === 0) {
+                throw new Error("Nenhum produto encontrado");
+            }
+    
+            return response.data;
+        } catch (error) {
+            console.error("Erro na busca:", error);
+            throw error;
+        }
+    };
+
     const addProduct = async (productData) => {
         setLoading(true);
         setError(null);
-    
+
         try {
             // Convertendo campos para o tipo correto
             const payload = {
@@ -64,10 +84,10 @@ export function Productprovider({ children }) {
 
             console.log("Payload final antes do FormData (CREATE):", payload);
 
-    
+
             // Criação do FormData
             const formData = new FormData();
-    
+
             Object.entries(payload).forEach(([key, value]) => {
                 if (Array.isArray(value)) {
                     value.forEach((val) => {
@@ -77,15 +97,15 @@ export function Productprovider({ children }) {
                     formData.append(key, value);
                 }
             });
-    
+
             // Log do conteúdo do formData (debug)
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
-            } 
+            }
 
             console.log("FormData final no FormData (CREATE):", formData);
 
-    
+
             const response = await axios.post(
                 `${BASE_URL}${API_URLS.PRODUCT.CREATE}`,
                 formData,
@@ -97,10 +117,10 @@ export function Productprovider({ children }) {
                 }
             );
 
-            
+
             return true;
             console.log("de bom o crete de produto: ", response.data);
-    
+
         } catch (error) {
             console.error("Erro completo:", {
                 message: error.message,
@@ -115,13 +135,13 @@ export function Productprovider({ children }) {
             setLoading(false);
         }
     };
-    
+
 
     // ✅ UPDATE Produto com Token, ID e dados new
     const updateProduct = async (productId, productData) => {
         setLoading(true);
         setError(null);
-    
+
         try {
             // Convertendo campos para o tipo correto
             const payload = {
@@ -132,12 +152,12 @@ export function Productprovider({ children }) {
                 modelId: productData.modelId?.map(Number) || [],
                 fornecedorId: productData.fornecedorId?.map(Number) || []
             };
-    
+
             console.log("Payload final antes do FormData (UPDATE):", payload);
-    
+
             // Criação do FormData
             const formData = new FormData();
-    
+
             Object.entries(payload).forEach(([key, value]) => {
                 if (Array.isArray(value)) {
                     value.forEach((val) => {
@@ -157,12 +177,12 @@ export function Productprovider({ children }) {
                     }
                 }
             });
-    
+
             // Log do conteúdo do formData (debug)
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
             }
-    
+
             const response = await axios.put(
                 `${BASE_URL}${API_URLS.PRODUCT.UPDATE}${productId}`,
                 formData,
@@ -173,11 +193,11 @@ export function Productprovider({ children }) {
                     },
                 }
             );
-    
+
             console.log("Resposta do servidor (UPDATE):", response.data);
             await fetchProducts();
             return true;
-    
+
         } catch (error) {
             console.error("Erro completo (UPDATE):", {
                 message: error.message,
@@ -235,6 +255,7 @@ export function Productprovider({ children }) {
                 getProducts,
                 fetchProducts,
                 fetchProductByID,
+                fetchProductByName,
                 addProduct,
                 updateProduct,
                 deleteProduct,

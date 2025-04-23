@@ -47,20 +47,26 @@ export function SupplierProvider({ children }) {
             throw error;
         }
     };
-
-    const fetchSupplierByName = async (fornecedorName) => {
+    
+    const fetchSupplierByNameOrCode = async (name) => {
         try {
-            const response = await axios.get(`${BASE_URL}${API_URLS.FORNECEDOR.GET_BY_NAME}${fornecedorName}`, {
+            const response = await axios.get(`${BASE_URL}${API_URLS.FORNECEDOR.GET_BY_NAME_OR_CODE}`, {
+                params: { param: name },
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
                 },
             });
+    
+            if (!response.data || response.data.length === 0) {
+                throw new Error("Nenhum fornecedor encontrado");
+            }
+    
             return response.data;
         } catch (error) {
-            console.error("Erro ao buscar fornecedor pelo Nome:", error);
+            console.error("Erro na busca:", error);
             throw error;
         }
-    }
+    };
 
     // ✅ CREATE Fornecedor com Token e dados
     const addSupplier = async (fornecedorData) => {
@@ -158,7 +164,7 @@ export function SupplierProvider({ children }) {
                 getSuppliers,
                 fetchSuppliers,
                 fetchSupplierById,
-                fetchSupplierByName,
+                fetchSupplierByNameOrCode,
                 addSupplier,
                 updateSupplier,
                 deleteSupplier,

@@ -48,19 +48,22 @@ export function CategoryProvider({ children }) {
     };
 
 
-    const fetchCategoriesByName = async (categoriaName) => {
+    const fetchCategoryByName = async (name) => {
         try {
-            const response = await axios.get(`${BASE_URL}${API_URLS.CATEGORY.GET_BY_NAME}${categoriaName}`, {
+            const response = await axios.get(`${BASE_URL}${API_URLS.CATEGORY.GET_BY_NAME}${name}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
                 },
             });
-            return response.data;
+            
+            // Converta o resultado único em um array
+            return Array.isArray(response.data) ? response.data : [response.data];
+            
         } catch (error) {
-            console.error("Erro ao buscar categoria pelo Nome:", error);
+            console.error("Erro ao buscar modelo pelo nome:", error);
             throw error;
         }
-    }
+    };
 
     // ✅ CREATE categoria com Token e dados
     const addCategory = async (categoriaData) => {
@@ -171,7 +174,7 @@ export function CategoryProvider({ children }) {
                 getCategories,
                 fetchCategories,
                 fetchCategoryById,
-                fetchCategoriesByName,
+                fetchCategoryByName,
                 addCategory,
                 updateCategory,
                 deleteCategory,
