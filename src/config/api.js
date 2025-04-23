@@ -16,7 +16,7 @@ export const API_URLS = {
         GET_BY_ID: "/api/v1/category/",
         UPDATE: "/api/v1/category/",
         DELETE: "/api/v1/category/",
-        GET_BY_NAME: "/api/v1/category/",
+        GET_BY_NAME: "/api/v1/category/findByName/",
         GET_ALL: "/api/v1/category",
     },
     MODELO: {

@@ -8,7 +8,10 @@ import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableCategory({ searchTerm }) {
+export default function TableCategory({ data }) {
+
+    console.log("vendo data no table:", data)
+
     const {
         getCategories,
         deleteCategory,
@@ -20,22 +23,24 @@ export default function TableCategory({ searchTerm }) {
 
     const { getProducts } = useContext(ProductContext);
 
-    console.log("vendo produtos em tabela de categoria: ", getProducts);
-    console.log("vendo categorias em tabela de categoria: ", getCategories);
+    // console.log("vendo produtos em tabela de categoria: ", getProducts);
+    // console.log("vendo categorias em tabela de categoria: ", getCategories);
 
     const [categoryToDelete, setCategoryToDelete] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
+    const tableData = Array.isArray(data) ? data : (data ? [data] : []);
+
     const navigate = useNavigate();
 
-    const filteredCategories = getCategories.filter((category) =>
-        category.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // const filteredCategories = getCategories.filter((category) =>
+    //     category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     useEffect(() => {
-        fetchCategories();
+        fetchCategories(); // 🔄 Sempre busca os modelos ao montar
     }, []);
 
     useEffect(() => {
@@ -73,7 +78,7 @@ export default function TableCategory({ searchTerm }) {
         setCategoryToDelete(category);
         setIsDeleteModalOpen(true);
     };
-    
+
     const closeDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setCategoryToDelete(null);
@@ -120,7 +125,7 @@ export default function TableCategory({ searchTerm }) {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredCategories.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = tableData.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -128,7 +133,7 @@ export default function TableCategory({ searchTerm }) {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(getCategories.length / itemsPerPage);
+        const totalPages = Math.ceil(tableData.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
@@ -261,8 +266,8 @@ export default function TableCategory({ searchTerm }) {
                     <li>
                         <button
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(getCategories.length / itemsPerPage)}
-                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getCategories.length / itemsPerPage)
+                            disabled={currentPage === Math.ceil(tableData.length / itemsPerPage)}
+                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(tableData.length / itemsPerPage)
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
                                 : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
