@@ -10,7 +10,7 @@ export default function Model() {
     const [isFocused, setIsFocused] = useState(false);
     const [searchResults, setSearchResults] = useState(null); // Estado para armazenar resultados
 
-    const { fetchModelByName, getModels, fetchModels } = useContext(ModelContext);
+    const { fetchModelByName, getModels, fetchModels , setError} = useContext(ModelContext);
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);

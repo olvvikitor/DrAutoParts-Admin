@@ -33,8 +33,7 @@ export const API_URLS = {
         GET_BY_ID: "/api/v1/fornecedor/",
         UPDATE: "/api/v1/fornecedor/",
         DELETE: "/api/v1/fornecedor/",
-        GET_BY_NAME: "/api/v1/fornecedor/",
-        GET_BY_CODE: "/api/v1/fornecedor/",
+        GET_BY_NAME_OR_CODE: "/api/v1/fornecedor/findByNameOrCode",
     },
     CART: {
         ADD_ITEM: "/api/v1/cartItem/add",

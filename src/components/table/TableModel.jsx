@@ -30,7 +30,7 @@ export default function TableModel({ data }) {
     // );
 
     useEffect(() => {
-        fetchModels(); // 🔄 Sempre busca os fornecedores ao montar
+        fetchModels(); // 🔄 Sempre busca os modelos ao montar
     }, []);
 
     const handleEdit = (model) => {

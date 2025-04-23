@@ -10,7 +10,8 @@ export default function Product() {
     const [isFocused, setIsFocused] = useState(false);
     const [searchResults, setSearchResults] = useState(null); // Estado para armazenar resultados
 
-    const { fetchProductByName, getProducts, fetcProducts } = useContext(ProductContext);
+    const { fetchProductByName, getProducts, fetcProducts, setError} = useContext(ProductContext);
+    
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };

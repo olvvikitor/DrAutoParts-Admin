@@ -8,7 +8,7 @@ import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function TableSupplier({ searchTerm }) {
+export default function TableSupplier({ data }) {
     const {
         getSuppliers,
         deleteSupplier,
@@ -18,6 +18,8 @@ export default function TableSupplier({ searchTerm }) {
         loading
     } = useContext(SupplierContext);
 
+    console.log("vendo data no table:", data)
+
     const { getProducts } = useContext(ProductContext);
 
     const [supplierToDelete, setSupplierToDelete] = useState(null);
@@ -25,20 +27,19 @@ export default function TableSupplier({ searchTerm }) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
+    const tableData = Array.isArray(data) ? data : (data ? [data] : []);
+
     const navigate = useNavigate();
 
-    const filteredSuppliers = getSuppliers.filter((supplier) =>
-        supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
+    // const filteredSuppliers = getSuppliers.filter((supplier) =>
+    //     supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     supplier.code.toLowerCase().includes(searchTerm.toLowerCase())
 
-    );
+    // );
 
     useEffect(() => {
-        if (getSuppliers.length === 0) {  // Só chama se não houver fornecedores carregados
-            fetchSuppliers();
-        }
-    }, [getSuppliers, fetchSuppliers]);
-
+        fetchSuppliers(); // 🔄 Sempre busca os fornecedores ao montar
+    }, []);
 
     const handleEdit = (supplier) => {
         navigate(`/supplier/edit/${supplier.id}`);
@@ -107,7 +108,7 @@ export default function TableSupplier({ searchTerm }) {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredSuppliers.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = tableData.slice(indexOfFirstItem, indexOfLastItem);
 
     // Calcular o número de linhas vazias necessárias
     const emptyRows = itemsPerPage - currentItems.length;
@@ -115,7 +116,7 @@ export default function TableSupplier({ searchTerm }) {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const renderPaginationButtons = () => {
-        const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage);
+        const totalPages = Math.ceil(tableData.length / itemsPerPage);
         const buttons = [];
 
         if (totalPages <= 1) return null;
@@ -251,8 +252,8 @@ export default function TableSupplier({ searchTerm }) {
                     <li>
                         <button
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(getSuppliers.length / itemsPerPage)}
-                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(getSuppliers.length / itemsPerPage)
+                            disabled={currentPage === Math.ceil(tableData.length / itemsPerPage)}
+                            className={`px-3 h-8 flex items-center justify-center border rounded-lg transition-colors ${currentPage === Math.ceil(tableData.length / itemsPerPage)
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500"
                                 : "bg-white border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                 }`}
