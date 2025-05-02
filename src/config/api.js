@@ -30,7 +30,7 @@ export const API_URLS = {
     FORNECEDOR: {
         CREATE: "/api/v1/fornecedor/new",
         GET_ALL: "/api/v1/fornecedor",
-        GET_BY_ID: "/api/v1/fornecedor/",
+        GET_BY_ID: "/api/v1/fornecedor/getById/",
         UPDATE: "/api/v1/fornecedor/",
         DELETE: "/api/v1/fornecedor/",
         GET_BY_NAME_OR_CODE: "/api/v1/fornecedor/findByNameOrCode",

@@ -50,7 +50,7 @@ export default function MenuAll() {
                             </motion.div>
                             <div className="text-start text-zinc-500 dark:text-zinc-400">
                                 <h2 className="text-sm font-semibold">{item.title}</h2>
-                                <p className="text-lg text-zinc-800 dark:text-zinc-300">{item.count}</p>
+                                {/* <p className="text-lg text-zinc-800 dark:text-zinc-300">{item.count}</p> */}
                             </div>
                         </motion.div>
                     </Link>
