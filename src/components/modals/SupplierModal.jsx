@@ -1,14 +1,20 @@
 import { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import { ModelContext } from "../../contexts/ModelContext";
+import { SupplierContext } from "../../contexts/SupplierContext";
 import SucessModal from "./SucessModal";
 import ErrorModal from "./ErrorModal";
 import LoadingSpinner from "../loading/LoadingSpinner";
+import { Link } from "react-router";
 
-export default function ModelModal({ onClose }) {
-    const { addModel, error, setError, loading } = useContext(ModelContext);
+export default function SupplierModal({ onClose }) {
+    const { addSupplier, error, setError, loading } = useContext(SupplierContext);
 
-    const [modelCreateData, setModelCreateData] = useState({ nome: "", ano: "", marca: "" });
+
+    const [supplierCreateData, setSupplierCreateData] = useState({
+        name: "",
+        code: "",
+    });
+
     const [errorInput, setErrorInput] = useState({});
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
@@ -16,17 +22,19 @@ export default function ModelModal({ onClose }) {
     useEffect(() => {
         if (error) {
             setShowErrorModal(true);
+            // Fecha o modal após 2 segundos
             const timer = setTimeout(() => {
                 setShowErrorModal(false);
-                setError(null);
+                setError(null)
+
             }, 2000);
-            return () => clearTimeout(timer);
+            return () => clearTimeout(timer); // Limpa o timer quando o componente for desmontado
         }
-    }, [error]);
+    }, [error]); // Só é acionado quando o 'error' mudar
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setModelCreateData((prevData) => ({
+        setSupplierCreateData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
@@ -35,17 +43,20 @@ export default function ModelModal({ onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let newErrors = {};
-        if (!modelCreateData.nome.trim()) newErrors.nome = "Nome é obrigatório";
-        if (!modelCreateData.ano.trim()) newErrors.ano = "Ano é obrigatório";
-        if (!modelCreateData.marca.trim()) newErrors.marca = "Marca é obrigatório";
+
+        if (!supplierCreateData.name.trim()) newErrors.name = "Nome é obrigatório";
+        if (!supplierCreateData.code.trim()) newErrors.code = "Código é obrigatório";
 
         setErrorInput(newErrors);
+
         if (Object.keys(newErrors).length > 0) return;
 
         try {
-            const success = await addModel(modelCreateData);
+            const success = await addSupplier(supplierCreateData);
+
             if (success) {
-                setModelCreateData({ nome: "", ano: "", marca: "" });
+                // Limpeza de dados e exibição do modal de sucesso
+                setSupplierCreateData({ name: "", code: "" });
                 setErrorInput({});
                 setShowSuccessModal(true);
                 setTimeout(() => {
@@ -54,9 +65,11 @@ export default function ModelModal({ onClose }) {
                 }, 2000);
             }
         } catch (err) {
-            console.error("Erro ao criar modelo:", err.response?.data || err);
+            console.error("Erro ao criar fornecedor:", err.response?.data || err);
+            // Exibir modal de erro, se necessário
         }
     };
+
 
     return (
         <motion.div
@@ -77,43 +90,39 @@ export default function ModelModal({ onClose }) {
                 transition={{ duration: 0.3 }}
             >
                 <h2 className="text-xl font-semibold mb-4 text-zinc-700 dark:text-zinc-300">
-                    Adicionar Modelo
+                    Adicionar Fornecedor
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="nome" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Nome do modelo</label>
+                        <label htmlFor="nome" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            Nome do Fornecedor
+                        </label>
                         <input
                             type="text"
-                            name="nome"
-                            value={modelCreateData.nome}
+                            name="name"
+                            value={supplierCreateData.name}
                             onChange={handleChange}
-                            placeholder="Digite o nome"
-                            className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-zinc-300" />
-                        {errorInput.nome && <p className="text-red-500 text-sm">{errorInput.nome}</p>}
+                            className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-zinc-300"
+                            placeholder="Digite o nome do fornecedor"
+                        />
+                        {errorInput.name && <p className="text-red-500 text-sm mb-2">{errorInput.name}</p>}
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Ano</label>
-                        <input
-                            type="number"
-                            name="ano"
-                            value={modelCreateData.ano}
-                            onChange={handleChange}
-                            placeholder="Digite o ano"
-                            className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-zinc-300" />
-                        {errorInput.ano && <p className="text-red-500 text-sm">{errorInput.ano}</p>}
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Marca</label>
-                        <input
-                            type="text"
-                            name="marca"
-                            value={modelCreateData.marca}
-                            onChange={handleChange}
-                            placeholder="Digite a marca"
-                            className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-zinc-300" />
 
-                        {errorInput.marca && <p className="text-red-500 text-sm">{errorInput.marca}</p>}
+                    <div >
+                        <label htmlFor="code" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            Código
+                        </label>
+                        <input
+                            type="text"
+                            name="code"
+                            value={supplierCreateData.code}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-zinc-300"
+                            placeholder="Digite o código"
+                        />
+                        {errorInput.code && <p className="text-red-500 text-sm mb-2">{errorInput.code}</p>}
                     </div>
+
                     <div className="flex justify-end gap-3">
                         <button
                             type="button"
@@ -133,8 +142,8 @@ export default function ModelModal({ onClose }) {
                 </form>
 
             </motion.div>
-            {showSuccessModal && <SucessModal titleSucess="Modelo criado com sucesso!" />}
-            {showErrorModal && <ErrorModal titleError="Erro ao criar Modelo!" textError={error} />}
+            {showSuccessModal && <SucessModal titleSucess="Fornecedor criado com sucesso!" />}
+            {showErrorModal && <ErrorModal titleError="Erro ao criar fornecedor!" textError={error} />}
             {loading && <LoadingSpinner />}
         </motion.div>
     );

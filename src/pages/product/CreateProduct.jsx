@@ -12,6 +12,7 @@ import { Link } from "react-router";
 import useToggle from "../../hooks/useToggle";
 import CategoryModal from "../../components/modals/CategoryModal";
 import ModelModal from "../../components/modals/ModelModal";
+import SupplierModal from "../../components/modals/SupplierModal";
 
 export default function CreateProduct() {
     const { addProduct, error, setError, loading } = useContext(ProductContext);
@@ -39,6 +40,7 @@ export default function CreateProduct() {
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showModalCategory, setShowModalCategory] = useState(false);
     const [showModalModel, setShowModalModel] = useState(false);
+    const [showModalSupplier, setShowModalSupplier] = useState(false);
 
     const [modelInputs, setModelInputs] = useState([0]);
     const [supplierInputs, setSupplierInputs] = useState([0]);
@@ -247,7 +249,7 @@ export default function CreateProduct() {
                                 >
                                     <RxShare1 size={20} className="cursor-pointer" onClick={() => { setShowModalCategory(true) }} />
                                     <RxTransform size={20} className="cursor-pointer" onClick={() => { setShowModalModel(true) }} />
-                                    <RxClipboardCopy size={20} className="cursor-pointer" />
+                                    <RxClipboardCopy size={20} className="cursor-pointer" onClick={()=>{ setShowModalSupplier(true) }} />
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -549,6 +551,7 @@ export default function CreateProduct() {
             {loading && <LoadingSpinner />}
             {showModalCategory && <CategoryModal onClose={() => setShowModalCategory(false)} />}
             {showModalModel && <ModelModal onClose={() => setShowModalModel(false)} />}
+            {showModalSupplier && <SupplierModal onClose={() => setShowModalSupplier(false)} />}
         </div >
     );
 }

@@ -78,8 +78,8 @@ export default function CategoryModal({ onClose }) {
                     Adicionar Categoria
                 </h2>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
                         <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                             Nome da Categoria
                         </label>
