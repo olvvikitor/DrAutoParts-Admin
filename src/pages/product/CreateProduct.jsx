@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
 import useToggle from "../../hooks/useToggle";
 import CategoryModal from "../../components/modals/CategoryModal";
+import ModelModal from "../../components/modals/ModelModal";
 
 export default function CreateProduct() {
     const { addProduct, error, setError, loading } = useContext(ProductContext);
@@ -36,7 +37,8 @@ export default function CreateProduct() {
     const [errorInput, setErrorInput] = useState({});
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [showModalCategory, setShowModalCategory] = useState(false);
+    const [showModalModel, setShowModalModel] = useState(false);
 
     const [modelInputs, setModelInputs] = useState([0]);
     const [supplierInputs, setSupplierInputs] = useState([0]);
@@ -243,8 +245,8 @@ export default function CreateProduct() {
                                     exit={{ opacity: 0, scale: 0.8, x: -10 }}
                                     transition={{ duration: 0.2 }}
                                 >
-                                    <RxShare1 size={20} className="cursor-pointer" onClick={() => { setShowModal(true) }} />
-                                    <RxTransform size={20} className="cursor-pointer" />
+                                    <RxShare1 size={20} className="cursor-pointer" onClick={() => { setShowModalCategory(true) }} />
+                                    <RxTransform size={20} className="cursor-pointer" onClick={() => { setShowModalModel(true) }} />
                                     <RxClipboardCopy size={20} className="cursor-pointer" />
                                 </motion.div>
                             )}
@@ -545,7 +547,8 @@ export default function CreateProduct() {
             {showSuccessModal && <SucessModal titleSucess="Produto criado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao criar produto!" textError={error} />}
             {loading && <LoadingSpinner />}
-            {showModal && <CategoryModal onClose={() => setShowModal(false)} />}
+            {showModalCategory && <CategoryModal onClose={() => setShowModalCategory(false)} />}
+            {showModalModel && <ModelModal onClose={() => setShowModalModel(false)} />}
         </div >
     );
 }
