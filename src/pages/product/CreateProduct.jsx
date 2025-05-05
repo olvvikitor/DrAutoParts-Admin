@@ -6,17 +6,21 @@ import { CategoryContext } from "../../contexts/CategoryContext";
 import SucessModal from "../../components/modals/SucessModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import LoadingSpinner from "../../components/loading/LoadingSpinner";
-import { RxArrowLeft, RxPlus, RxMinus } from "react-icons/rx";
-import { RxCross2, RxUpload } from "react-icons/rx";
-import { motion } from "framer-motion";
+import { RxArrowLeft, RxPlus, RxMinus, RxDotsHorizontal, RxCross2, RxUpload, RxClipboardCopy, RxArchive, RxShare1, RxTransform } from "react-icons/rx";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
-
+import useToggle from "../../hooks/useToggle";
+import CategoryModal from "../../components/modals/CategoryModal";
+import ModelModal from "../../components/modals/ModelModal";
+import SupplierModal from "../../components/modals/SupplierModal";
 
 export default function CreateProduct() {
     const { addProduct, error, setError, loading } = useContext(ProductContext);
     const { getSuppliers } = useContext(SupplierContext);
     const { getModels } = useContext(ModelContext);
     const { getCategories } = useContext(CategoryContext);
+
+    const [closed, setClosed] = useToggle(false);
 
     const [ProductCreateData, setProductCreateData] = useState({
         name: "",
@@ -34,11 +38,13 @@ export default function CreateProduct() {
     const [errorInput, setErrorInput] = useState({});
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showModalCategory, setShowModalCategory] = useState(false);
+    const [showModalModel, setShowModalModel] = useState(false);
+    const [showModalSupplier, setShowModalSupplier] = useState(false);
 
-    const [modelInputs, setModelInputs] = useState([0]); 
-    const [supplierInputs, setSupplierInputs] = useState([0]); 
+    const [modelInputs, setModelInputs] = useState([0]);
+    const [supplierInputs, setSupplierInputs] = useState([0]);
     const [previewImage, setPreviewImage] = useState(null);
-
 
     // Função para adicionar um novo input de fornecedor
     const addSupplierInput = () => {
@@ -227,9 +233,34 @@ export default function CreateProduct() {
                 Produtos
             </motion.h1>
             <div className="bg-white dark:bg-gray-700 text-zinc-700 dark:text-zinc-300 rounded-xl mt-5 p-4">
-                <Link to="/product" onClick={() =>{setError(null)}}>
-                    <RxArrowLeft size={25} />
-                </Link>
+                <div className="flex justify-between">
+                    <Link to="/product" onClick={() => { setError(null) }}>
+                        <RxArrowLeft size={25} />
+                    </Link>
+                    <div className="flex gap-2 items-center">
+                        <AnimatePresence>
+                            {closed && (
+                                <motion.div
+                                    className="flex gap-2 dark:bg-gray-500 bg-gray-100 p-1 rounded"
+                                    initial={{ opacity: 0, scale: 0.8, x: -10 }}
+                                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                                    exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <RxShare1 size={20} className="cursor-pointer" onClick={() => { setShowModalCategory(true) }} />
+                                    <RxTransform size={20} className="cursor-pointer" onClick={() => { setShowModalModel(true) }} />
+                                    <RxClipboardCopy size={20} className="cursor-pointer" onClick={()=>{ setShowModalSupplier(true) }} />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        {closed ? (
+                            <RxCross2 size={25} onClick={setClosed} className="cursor-pointer" />
+                        ) : (
+                            <RxDotsHorizontal size={25} onClick={setClosed} className="cursor-pointer" />
+                        )}
+
+                    </div>
+                </div>
 
                 <motion.h1
                     className="text-xl text-center font-semibold text-zinc-700 dark:text-zinc-300 my-4"
@@ -296,8 +327,8 @@ export default function CreateProduct() {
                                     name="tipo"
                                     value={ProductCreateData.tipo}
                                     onChange={handleChange}
-                                    className= "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 border-zinc-300 dark:border-zinc-600"
-                                        
+                                    className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 border-zinc-300 dark:border-zinc-600"
+
                                 >
                                     <option value="">Selecione um tipo</option>
                                     <option value="JOGO">JOGO</option>
@@ -499,7 +530,7 @@ export default function CreateProduct() {
                             <Link to="/product" >
                                 <button
                                     type="button"
-                                    onClick={() =>{setError(null)}}
+                                    onClick={() => { setError(null) }}
                                     className="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-500 cursor-pointer"
                                 >
                                     Cancelar
@@ -518,6 +549,9 @@ export default function CreateProduct() {
             {showSuccessModal && <SucessModal titleSucess="Produto criado com sucesso!" />}
             {showErrorModal && <ErrorModal titleError="Erro ao criar produto!" textError={error} />}
             {loading && <LoadingSpinner />}
-        </div>
+            {showModalCategory && <CategoryModal onClose={() => setShowModalCategory(false)} />}
+            {showModalModel && <ModelModal onClose={() => setShowModalModel(false)} />}
+            {showModalSupplier && <SupplierModal onClose={() => setShowModalSupplier(false)} />}
+        </div >
     );
 }
