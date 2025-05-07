@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext } from "react";
+import { useState, useEffect, useContext, createContext, useCallback } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import { BASE_URL, API_URLS } from "../config/api";
@@ -18,7 +18,7 @@ export function ModelProvider({ children }) {
     }, [])
 
     // ✅ GET Modelos com Token
-    const fetchModels = async () => {
+    const fetchModels = useCallback(async () => {
         try {
             const respose = await axios.get(`${BASE_URL}${API_URLS.MODELO.GET_ALL}`, {
                 headers: {
@@ -32,7 +32,7 @@ export function ModelProvider({ children }) {
             console.error("Erro ao buscar modelos:", error);
 
         }
-    };
+    }, [token]);
 
 
     // ✅ Função para buscar um modelo pelo ID
@@ -49,7 +49,7 @@ export function ModelProvider({ children }) {
             throw error;
         }
     };
-    
+
     const fetchModelByName = async (name) => {
         try {
             const response = await axios.get(`${BASE_URL}${API_URLS.MODELO.GET_BY_NAME}${name}`, {
@@ -57,10 +57,10 @@ export function ModelProvider({ children }) {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            
+
             // Converta o resultado único em um array
             return Array.isArray(response.data) ? response.data : [response.data];
-            
+
         } catch (error) {
             console.error("Erro ao buscar modelo pelo nome:", error);
             throw error;
