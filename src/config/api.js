@@ -40,7 +40,8 @@ export const API_URLS = {
         GET_CONTENT: "/api/v1/cartItem/content",
     },
     CUSTOMER:{
-        CAROUSEL: "/api/v1/carrousel",
+        GET_CAROUSEL: "/api/v1/carrousel",
+        CREATE_CAROUSEL: "/api/v1/carrousel",
     },
 };
 

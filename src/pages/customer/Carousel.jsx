@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { RxPlus, RxMagnifyingGlass } from "react-icons/rx";
+import { RxPlus } from "react-icons/rx";
 import { Link } from "react-router";
 import { CustomerContext } from "../../contexts/CustomerContext";
 import ImageGallery from "../../components/customer/ImageGallery";
