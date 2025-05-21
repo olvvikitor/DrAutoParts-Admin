@@ -1,5 +1,5 @@
 import React from 'react';
-import { RxDashboard, RxClipboardCopy, RxArchive, RxShare1, RxTransform } from "react-icons/rx";
+import { RxDashboard, RxClipboardCopy, RxArchive, RxShare1, RxTransform, RxLayout  } from "react-icons/rx";
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from "../../assets/logo.png";
@@ -11,6 +11,7 @@ const SidebarDesktop = ({ isOpen }) => {
         { icon: <RxShare1 size={20} />, text: "Categorias", to: "/category" },
         { icon: <RxTransform size={20} />, text: "Modelos", to: "/model" },
         { icon: <RxClipboardCopy size={20} />, text: "Fornecedores", to: "/supplier" },
+        { icon: <RxLayout  size={20} />, text: "Carrossel", to: "/carousel" },
     ];
 
     return (

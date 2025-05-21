@@ -16,7 +16,9 @@ import EditCategory from '../pages/category/EditCategory';
 import Product from '../pages/product/Product';
 import CreateProduct from '../pages/product/CreateProduct';
 import EditProduct from '../pages/product/EditProduct';
+import Carousel from '../pages/customer/Carousel';
 import ProtectedRouter from '../components/protected/ProtectedRouter'; // Importe o ProtectedRouter
+import CreateCarousel from '../pages/customer/CreateCarousel';
 
 export function AppRoutes() {
     return (
@@ -27,7 +29,7 @@ export function AppRoutes() {
             </Route>
 
             {/* Rotas protegidas com DefaultLayout */}
-            <Route element={<DefaultLayout />}>
+            <Route element={<DefaultLayout />}>     
                 <Route element={<ProtectedRouter />}>
                     <Route path="/home" element={<Home />} />
                     <Route path="/product" element={<Product />} />
@@ -42,6 +44,8 @@ export function AppRoutes() {
                     <Route path="/supplier" element={<Supplier />} />
                     <Route path="/supplier/create" element={<CreateSupplier />} />
                     <Route path="/supplier/edit/:id" element={<EditSupplier />} />
+                    <Route path="/carousel" element={<Carousel />} />
+                    <Route path="/carousel/create" element={<CreateCarousel />} />
                 </Route>
             </Route>
         </Routes>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext } from "react";
+import { useState, useEffect, useContext, createContext, useCallback } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import { BASE_URL, API_URLS } from "../config/api";
@@ -19,7 +19,7 @@ export function SupplierProvider({ children }) {
     }, []);
 
     // ✅ GET Fornecedores com Token
-    const fetchSuppliers = async () => {
+    const fetchSuppliers = useCallback(async () => {
         try {
             const response = await axios.get(`${BASE_URL}${API_URLS.FORNECEDOR.GET_ALL}`, {
                 headers: {
@@ -31,7 +31,7 @@ export function SupplierProvider({ children }) {
         } catch (error) {
             console.error("Erro ao buscar fornecedores:", error);
         }
-    };
+    }, [token]);
 
     // ✅ GET Fornecedores by ID com Token
     const fetchSupplierById = async (id) => {
@@ -47,7 +47,7 @@ export function SupplierProvider({ children }) {
             throw error;
         }
     };
-    
+
     const fetchSupplierByNameOrCode = async (name) => {
         try {
             const response = await axios.get(`${BASE_URL}${API_URLS.FORNECEDOR.GET_BY_NAME_OR_CODE}`, {
@@ -56,11 +56,11 @@ export function SupplierProvider({ children }) {
                     Authorization: `Bearer ${token}`,
                 },
             });
-    
+
             if (!response.data || response.data.length === 0) {
                 throw new Error("Nenhum fornecedor encontrado");
             }
-    
+
             return response.data;
         } catch (error) {
             console.error("Erro na busca:", error);

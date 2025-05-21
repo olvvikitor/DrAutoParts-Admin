@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext } from "react";
+import { useState, useEffect, useContext, createContext, useCallback } from "react";
 import axios from "axios";
 import { BASE_URL, API_URLS } from "../config/api";
 import { AuthContext } from "./AuthContext";
@@ -18,7 +18,7 @@ export function CategoryProvider({ children }) {
     }, []);
 
     // ✅ GET categorias com Token
-    const fetchCategories = async () => {
+    const fetchCategories = useCallback(async () => {
         try {
             const response = await axios.get(`${BASE_URL}${API_URLS.CATEGORY.GET_ALL}`, {
                 headers: {
@@ -30,7 +30,7 @@ export function CategoryProvider({ children }) {
         } catch (error) {
             console.error("Erro ao buscar Categorias:", error);
         }
-    };
+    }, [token]);
 
     // ✅ GET Categoria by ID com Token
     const fetchCategoryById = async (id) => {

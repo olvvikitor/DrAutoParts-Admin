@@ -5,22 +5,24 @@ import { SupplierProvider } from "./contexts/SupplierContext";
 import { ModelProvider } from "./contexts/ModelContext";
 import { CategoryProvider } from "./contexts/CategoryContext";
 import { Productprovider } from "./contexts/ProductContext";
-
+import { CustomerProvider } from "./contexts/CustomerContext";
 export default function App() {
 
   return (
     <>
       <AuthProvider>
         <ThemeProvider>
-          <CategoryProvider>
-            <ModelProvider>
-              <SupplierProvider>
-                <Productprovider>
-                  <AppRoutes />
-                </Productprovider>
-              </SupplierProvider>
-            </ModelProvider>
-          </CategoryProvider>
+          <CustomerProvider>
+            <CategoryProvider>
+              <ModelProvider>
+                <SupplierProvider>
+                  <Productprovider>
+                    <AppRoutes />
+                  </Productprovider>
+                </SupplierProvider>
+              </ModelProvider>
+            </CategoryProvider>
+          </CustomerProvider>
         </ThemeProvider>
       </AuthProvider>
     </>

@@ -16,9 +16,13 @@ import SupplierModal from "../../components/modals/SupplierModal";
 
 export default function CreateProduct() {
     const { addProduct, error, setError, loading } = useContext(ProductContext);
-    const { getSuppliers } = useContext(SupplierContext);
-    const { getModels } = useContext(ModelContext);
-    const { getCategories } = useContext(CategoryContext);
+    const { getSuppliers, fetchSuppliers } = useContext(SupplierContext);
+    const { getModels, fetchModels } = useContext(ModelContext);
+    const { getCategories, fetchCategories } = useContext(CategoryContext);
+
+    console.log("vendo fornecedores: ", getSuppliers);
+    console.log("vendo modelos: ", getModels);
+    console.log("vendo categoria: ", getCategories);
 
     const [closed, setClosed] = useToggle(false);
 
@@ -45,6 +49,16 @@ export default function CreateProduct() {
     const [modelInputs, setModelInputs] = useState([0]);
     const [supplierInputs, setSupplierInputs] = useState([0]);
     const [previewImage, setPreviewImage] = useState(null);
+
+
+    // useEffect(() => {
+
+    //     fetchCategories();
+    //     fetchSuppliers();
+    //     fetchModels();
+
+    // }, [fetchCategories, fetchSuppliers, fetchModels]);
+
 
     // Função para adicionar um novo input de fornecedor
     const addSupplierInput = () => {
@@ -249,7 +263,7 @@ export default function CreateProduct() {
                                 >
                                     <RxShare1 size={20} className="cursor-pointer" onClick={() => { setShowModalCategory(true) }} />
                                     <RxTransform size={20} className="cursor-pointer" onClick={() => { setShowModalModel(true) }} />
-                                    <RxClipboardCopy size={20} className="cursor-pointer" onClick={()=>{ setShowModalSupplier(true) }} />
+                                    <RxClipboardCopy size={20} className="cursor-pointer" onClick={() => { setShowModalSupplier(true) }} />
                                 </motion.div>
                             )}
                         </AnimatePresence>

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RxClipboardCopy, RxArchive, RxShare1, RxTransform } from "react-icons/rx";
+import { RxClipboardCopy, RxArchive, RxShare1, RxTransform, RxLayout } from "react-icons/rx";
 import { ProductContext } from "../../contexts/ProductContext";
 import { SupplierContext } from "../../contexts/SupplierContext";
 import { CategoryContext } from "../../contexts/CategoryContext";
@@ -21,6 +21,7 @@ export default function MenuAll() {
         { icon: <RxShare1 size={24} />, title: "Categorias", count: getCategories.length, to: "/category" },
         { icon: <RxTransform size={24} />, title: "Modelos", count: getModels.length, to: "/model" },
         { icon: <RxClipboardCopy size={24} />, title: "Fornecedores", count: getSuppliers.length, to: "/supplier" },
+        { icon: <RxLayout size={24} />, title: "Carrossel", count: getSuppliers.length, to: "/carousel" },
     ];
 
     // Variantes de animação para os itens
@@ -30,7 +31,7 @@ export default function MenuAll() {
     };
 
     return (
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
             <AnimatePresence>
                 {items.map((item, index) => (
                     <Link to={item.to} key={index}> 

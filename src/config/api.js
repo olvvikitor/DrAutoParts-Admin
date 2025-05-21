@@ -39,6 +39,10 @@ export const API_URLS = {
         ADD_ITEM: "/api/v1/cartItem/add",
         GET_CONTENT: "/api/v1/cartItem/content",
     },
+    CUSTOMER:{
+        GET_CAROUSEL: "/api/v1/carrousel",
+        CREATE_CAROUSEL: "/api/v1/carrousel",
+    },
 };
 
 // URL base da API

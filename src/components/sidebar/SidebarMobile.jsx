@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { RxDashboard, RxClipboardCopy, RxArchive, RxShare1, RxTransform, RxCross2 } from "react-icons/rx";
+import { RxDashboard, RxClipboardCopy, RxArchive, RxShare1, RxTransform, RxCross2, RxLayout } from "react-icons/rx";
 import { Link } from "react-router";
 
 export default function SidebarMobile({ isOpen, toggleSidebar }) {
@@ -10,6 +10,7 @@ export default function SidebarMobile({ isOpen, toggleSidebar }) {
         { path: "/category", label: "Categorias", icon: <RxShare1 size={20} /> },
         { path: "/model", label: "Modelos", icon: <RxTransform size={20} /> },
         { path: "/supplier", label: "Fornecedores", icon: <RxClipboardCopy size={20} /> },
+        { path: "/carousel", label: "Carrossel", icon: <RxLayout size={20} /> },
     ];
 
     return (
